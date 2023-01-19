@@ -7,7 +7,7 @@ const app = express.Router()
 
 app.get("/", async (request, response) => {
 	let jobId = randomUUID()
-	const client = await soap.createClientAsync(__dirname + "/../../lib/RCCService.wsdl", {}, "http://144.126.135.224:64989/")
+	const client = await soap.createClientAsync(__dirname + "/../../lib/RCCService.wsdl", {}, "http://127.0.0.1:64989/")
 	const result = await client.OpenJobExAsync({
 		job: {
 			id: jobId,
@@ -42,7 +42,7 @@ app.get("/", async (request, response) => {
 					},
 					{
 						type: "LUA_TSTRING",
-						value: "https://sitetest.unexp.xyz",
+						value: "https://economy.ittblox.gay",
 					},
 					{
 						type: "LUA_TNUMBER",
