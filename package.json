@@ -1,0 +1,20 @@
+{
+	"name": "bingle-arbiter",
+	"version": "0.1",
+	"main": "src/index.js",
+	"scripts": {
+		"start": "node ."
+	},
+	"repository": {
+		"type": "git",
+		"url": "git@calones.xyz:Bingle/arbiter.git"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"dependencies": {
+		"chalk": "^4.1.2",
+		"express": "^4.18.2",
+		"soap": "^1.0.0"
+	}
+}
