@@ -1,6 +1,6 @@
 local jobId, type, format, x, y, baseUrl, assetId = ...
 
-print(("[%s] Started RenderJob for type 'user_headshot' with assetId %d ..."):format(jobId, assetId))
+print(("[%s] Started RenderJob for type '%s' with assetId %d ..."):format(jobId, type, assetId))
 
 game:GetService("ScriptInformationProvider"):SetAssetUrl(baseUrl .. "/asset/")
 game:GetService("InsertService"):SetAssetUrl(baseUrl .. "/asset/?id=%d")
@@ -24,7 +24,7 @@ local AngleOffsetY = 0
 local AngleOffsetZ = 0
 
 local CameraAngle = Player.Character.Head.CFrame * CFrame.new(AngleOffsetX, AngleOffsetY, AngleOffsetZ)
-local CameraPosition = Player.Character.Head.CFrame + Vector3.new(0, 0, 0) + (CFrame.Angles(0, 0, 0).lookVector.unit * 3)
+local CameraPosition = Player.Character.Head.CFrame + Vector3.new(0, 0, 0) + (CFrame.Angles(0, -0.2, 0).lookVector.unit * 3)
 
 local Camera = Instance.new("Camera", Player.Character)
 Camera.Name = "ThumbnailCamera"
