@@ -12,7 +12,11 @@ class RCCService extends EventEmitter {
 	Start(options = { cwd: this.path }) {
 		return new Promise((resolve, reject) => {
 			try {
-				this.proc = child_process.spawn("RCCService.exe", ["-Console", "-PlaceId:-1", `-Port`, port], options)
+				if(process.platform == "win32") {
+					this.proc = child_process.spawn("RCCService.exe", ["-Console", "-PlaceId:-1", `-Port`, port], options)
+				} else {
+					this.proc = child_process.spawn("wine", ["RCCService.exe", "-Console", "-PlaceId:-1", `-Port`, port], options)
+				}
 				this.proc.once("spawn", () => {
 					logger.info(`Spawning RCCService instance on port ${port}`);
 					resolve(this.proc)

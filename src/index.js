@@ -15,7 +15,7 @@ app.use("/render/game", require("./routes/render/game.js"))
 app.use("*", require("./routes/index.js"))
 
 app.listen(process.env.PORT || 64989, () => {
-	logger.info(`Listening on http://127.0.0.1:${process.env.PORT || 64989}/`)
+	logger.boot(`Listening on http://127.0.0.1:${process.env.PORT || 64989}/`)
 })
 
 process.on("uncaughtException", (err) => {
