@@ -1,5 +1,6 @@
 const EventEmitter = require("events")
 const child_process = require("child_process")
+const waitPort = require("wait-port")
 const logger = require("../../lib/logger.js")
 
 class RCCService extends EventEmitter {
@@ -17,23 +18,31 @@ class RCCService extends EventEmitter {
 				} else {
 					this.proc = child_process.spawn("wine", ["RCCService.exe", "-Console", "-PlaceId:-1", `-Port`, this.port], options)
 				}
-				this.proc.once("spawn", () => {
-					logger.info(`Spawned RCCService instance on port ${this.port}`)
-					resolve(this.proc)
+
+				this.proc.once("spawn", async () => {
+					logger.info(`[${this.port}] RCCService instance spawned`)
+					const { open } = await waitPort({ host: "127.0.0.1", port: this.port, timeout: 5000, output: "silent" }).catch((e) => console.log(e))
+					if (!open || this.proc.exitCode !== null) {
+						logger.error(`[${this.port}] RCCService could not listen, exiting`)
+						this.Close()
+						return resolve(false)
+					}
+
+					return resolve(true)
 				})
+
 				this.proc.once("exit", () => {
 					this.proc = null
-					logger.info(`An RCCService instance has closed on port ${this.port}`)
+					logger.info(`[${this.port}] RCCService instance exited`)
 				})
 			} catch (_) {
-				logger.error(_)
-				reject(_)
+				resolve(false)
 			}
 		})
 	}
 
 	Stop(signal = "SIGTERM") {
-		if (!this.proc) throw new Error("Process is not running")
+		if (!this.proc) return
 		return this.proc.kill(signal)
 	}
 }
