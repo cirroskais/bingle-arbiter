@@ -18,12 +18,12 @@ class RCCService extends EventEmitter {
 					this.proc = child_process.spawn("wine", ["RCCService.exe", "-Console", "-PlaceId:-1", `-Port`, this.port], options)
 				}
 				this.proc.once("spawn", () => {
-					logger.info(`Spawning RCCService instance on port ${this.port}`);
+					logger.info(`Spawned RCCService instance on port ${this.port}`);
 					resolve(this.proc)
 				})
 				this.proc.once("exit", () => {
 					this.proc = null;
-					logger.info(`Job has ended, closing RCCService on port ${this.port}`)
+					logger.info(`An RCCService instance has closed on port ${this.port}`)
 				})
 			} catch (_) {
 				logger.error(_);
