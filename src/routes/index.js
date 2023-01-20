@@ -10,7 +10,7 @@ app.all("*", async (request, response) => {
 	const proc = await rcc.start(64989)
 	if (proc.exitCode !== null) return response.json(false)
 
-	await wait(1000)
+	await wait(5000)
 
 	const jobId = "RenderTest"
 	const client = await soap.createClientAsync(__dirname + "/../lib/RCCService.wsdl", {}, "http://127.0.0.1:64989/")
@@ -23,7 +23,7 @@ app.all("*", async (request, response) => {
 		},
 		script: {
 			name: jobId,
-			script: readFileSync(__dirname + "/../lua/user_headshot.lua", { encoding: "utf-8" }),
+			script: readFileSync(__dirname + "/../lua/user.lua", { encoding: "utf-8" }),
 			arguments: {
 				LuaValue: [
 					{
@@ -48,7 +48,7 @@ app.all("*", async (request, response) => {
 					},
 					{
 						type: "LUA_TSTRING",
-						value: "https://economy.ittblox.gay",
+						value: "https://sitetest.unexp.xyz",
 					},
 					{
 						type: "LUA_TNUMBER",

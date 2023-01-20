@@ -1,10 +1,12 @@
 const chalk = require("chalk")
 
 const logger = {
-	info: (_) => console.log(chalk.blue("[info]"), _),
-	success: (_) => console.log(chalk.green("[success]"), _),
-	warn: (_) => console.log(chalk.yellow("[warn]"), _),
-	error: (_) => console.log(chalk.red("[error]"), _),
+	// Omg just like tadah :D (Tadahjak face)
+	boot: (_) => console.log(chalk.greenBright("[BOOT]"), _),
+	info: (_) => console.log(chalk.blue("[INFO]"), _),
+	success: (_) => console.log(chalk.green("[SUCCESS]"), _),
+	warn: (_) => console.log(chalk.yellow("[WARN]"), _),
+	error: (_) => console.log(chalk.red("[ERROR]"), _),
 }
 
 module.exports = logger

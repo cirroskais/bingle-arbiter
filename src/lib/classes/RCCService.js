@@ -1,5 +1,6 @@
 const EventEmitter = require("events")
 const child_process = require("child_process")
+const logger = require(`${__dirname}\\..\\logger.js`)
 
 class RCCService extends EventEmitter {
 	constructor(path = process.env.RCCSERVICE_PATH) {
@@ -10,19 +11,24 @@ class RCCService extends EventEmitter {
 	start(port, options = { cwd: this.path }) {
 		return new Promise((resolve, reject) => {
 			try {
-				this.proc = child_process.spawn("wine", ["RCCService.exe", "-console", "-placeid:-1", `-port`, port], options)
-				this.proc.once("spawn", resolve(this.proc))
+				this.proc = child_process.spawn("RCCService.exe", ["-Console", "-PlaceId:-1", `-Port`, port], options)
+				this.proc.once("spawn", () => {
+					logger.info(`Spawning RCCService instance on port ${port}`);
+					resolve(this.proc)
+				})
 				this.proc.once("exit", () => {
-					this.proc = null
+					this.proc = null;
+					logger.info(`Job has ended, closing RCCService on port ${port}`)
 				})
 			} catch (_) {
+				logger.error(_);
 				reject(_)
 			}
 		})
 	}
 
 	stop(signal = "SIGTERM") {
-		if (!this.proc) throw new Error("Process is not running")
+		if (!this.proc) { logger.error("RCCService process is not running"); throw new Error("Process is not running") }
 		return this.proc.kill(signal)
 	}
 }
