@@ -2,8 +2,6 @@ const logger = require("./lib/logger.js")
 const express = require("express")
 const app = express()
 
-process.env.RCCSERVICE_PATH = "D:\\Projects\\Roblox\\Source\\UploadBits\\Win32-Release-RCCService\\"
-
 app.use("/game/start", require("./routes/game/start.js"))
 app.use("/game/stop", require("./routes/game/stop.js"))
 app.use("/game/execute", require("./routes/game/execute.js"))
