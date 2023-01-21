@@ -17,11 +17,11 @@ app.get("/:id", async (request, response) => {
 	const result = await job
 		.Open({
 			name: job.id,
-			script: readFileSync(__dirname + "/../../lua/xml.lua", { encoding: "utf-8" }),
+			script: readFileSync(__dirname + "/../../lua/headshot.lua", { encoding: "utf-8" }),
 			arguments: {
 				LuaValue: [
 					{ type: "LUA_TSTRING", value: job.id },
-					{ type: "LUA_TSTRING", value: "XML" },
+					{ type: "LUA_TSTRING", value: "Headshot" },
 					{ type: "LUA_TSTRING", value: "PNG" },
 
 					// change this to 1920x when we finish the arbiter

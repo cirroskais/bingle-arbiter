@@ -7,8 +7,9 @@ app.use("/game/stop", require("./routes/game/stop.js"))
 app.use("/game/execute", require("./routes/game/execute.js"))
 
 app.use("/render/asset", require("./routes/render/asset.js"))
-app.use("/render/avatar", require("./routes/render/avatar.js"))
 app.use("/render/game", require("./routes/render/game.js"))
+app.use("/render/headshot", require("./routes/render/headshot.js"))
+app.use("/render/bodyshot", require("./routes/render/bodyshot.js"))
 
 app.use("*", require("./routes/index.js"))
 

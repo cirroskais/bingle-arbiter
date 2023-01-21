@@ -1,14 +1,14 @@
 const { readFileSync } = require("fs")
 const { randomUUID } = require("crypto")
 const logger = require("../../lib/logger.js")
+const randport = require("../../lib/randport.js")
 const Job = require("../../lib/classes/Job.js")
 
 const express = require("express")
 const app = express.Router()
 
 app.get("/:id", async (request, response) => {
-	let tempPort = 64990
-	const job = new Job(randomUUID(), tempPort)
+	const job = new Job(randomUUID(), await randport())
 	const started = await job.Start()
 	if (!started) return response.status(500).json({ error: "RCCService failed to start" })
 
