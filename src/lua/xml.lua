@@ -13,7 +13,7 @@ asset.Parent = workspace
 
 local thumbnailCamera = asset:FindFirstChild("ThumbnailCamera")
 if thumbnailCamera ~= nil and thumbnailCamera.ClassName == "Camera" then
-    workspace.CurrentCamera = ModelCamera
+    workspace.CurrentCamera = thumbnailCamera
 end
 
 print(("[%s] Rendering ..."):format(jobId))

@@ -1,9 +1,11 @@
-const RCCService = require("./RCCService.js")
 const soap = require("soap")
+const { randomUUID } = require("crypto")
+
+const RCCService = require("./RCCService.js")
 
 class Job extends RCCService {
-	constructor(id, port, expirationInSeconds = 10, category = 0, cores = 1) {
-		super(port)
+	constructor({ id = randomUUID(), expirationInSeconds = 10, category = 0, cores = 1 } = {}) {
+		super()
 		this.id = id
 		this.expirationInSeconds = expirationInSeconds
 		this.category = category
@@ -15,7 +17,7 @@ class Job extends RCCService {
 		return this.client
 	}
 
-	async Open(script) {
+	async OpenJobEx(script) {
 		if (!this.client) throw new Error("There is no client")
 		return await this.client.OpenJobExAsync({
 			job: {
@@ -28,16 +30,19 @@ class Job extends RCCService {
 		})
 	}
 
-	async Close() {
+	async CloseJob() {
 		if (!this.client) return true
-		return await this.client.CloseAllJobsAsync({})
+		return await this.client.CloseJobAsync({ jobID: this.id })
 	}
 
 	async RenewLease(expirationInSeconds) {
-		return await this.client.RenewLeaseAsync({
-			jobID: this.id,
-			expirationInSeconds,
-		})
+		if (!this.client) throw new Error("There is no client")
+		return await this.client.RenewLeaseAsync({ jobID: this.id, expirationInSeconds })
+	}
+
+	async Execute(name, script) {
+		if (!this.client) throw new Error("There is no client")
+		return await this.client.ExecuteAsync({ jobID: this.id, script: { name, script, arguments: {} } })
 	}
 }
 
