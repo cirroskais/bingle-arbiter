@@ -4,7 +4,7 @@ const app = express()
 
 const logger = require("./lib/logger.js")
 
-if (process.platform == "linux") logger.warn("Game hosting might not fully compatible with Linux")
+if (process.platform == "linux") logger.warn("Game hosting might not be fully compatible with Linux")
 
 app.use("/place/start", require("./routes/place/start.js"))
 app.use("/place/stop", require("./routes/place/stop.js"))
