@@ -38,7 +38,9 @@ class GameJob extends Job {
 						{ type: "LUA_TNUMBER", value: server_owner_id },
 					],
 				},
-			}).catch((e) => reject(e))
+			})
+				.then(() => this.Stop())
+				.catch((e) => reject(e))
 
 			resolve()
 		})
