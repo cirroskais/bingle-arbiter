@@ -116,7 +116,7 @@ end
 
 spawn(function()
     while true do
-	wait(10)
+	wait(30)
         if #game.Players:GetPlayers() == 0 then
             pcall(function() game:HttpGet(baseUrl .. "/arbiter/" .. jobId .. "/kill") end)
         else
