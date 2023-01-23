@@ -43,6 +43,11 @@ class GameJob extends Job {
 			resolve()
 		})
 	}
+
+	async Running() {
+		const result = await game.Execute("IsRunning", "return true").catch((_) => _)
+		return !result?.message
+	}
 }
 
 module.exports = GameJob

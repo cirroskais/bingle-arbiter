@@ -46,6 +46,11 @@ class Job extends RCCService {
 		if (!this.client) throw new Error("There is no client")
 		return await this.client.ExecuteAsync({ jobID: this.id, script: { name, script, arguments: {} } })
 	}
+
+	async GetStatus() {
+		if (!this.client) throw new Error("There is no client")
+		return await this.client.GetStatusAsync({})
+	}
 }
 
 module.exports = Job

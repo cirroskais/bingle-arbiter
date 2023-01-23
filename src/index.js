@@ -5,12 +5,21 @@ const app = express()
 const logger = require("./lib/logger.js")
 
 if (process.platform == "linux") logger.warn("Game hosting might not be fully compatible with Linux")
+
 global.games = new Map()
+
+setInterval(() => {
+	logger.info("Killing jobless RCCService instances...")
+	global.games.forEach(async (value, key) => {
+		if (!(await game.Running())) game.Stop()
+	})
+}, 15000)
 
 app.use("/game/start", require("./routes/game/start.js"))
 app.use("/game/stop", require("./routes/game/stop.js"))
 app.use("/game/running", require("./routes/game/running.js"))
 app.use("/game/renew", require("./routes/game/renew.js"))
+app.use("/game/status", require("./routes/game/status.js"))
 
 app.use("/render/asset", require("./routes/render/asset.js"))
 app.use("/render/game", require("./routes/render/game.js"))

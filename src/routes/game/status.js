@@ -5,15 +5,10 @@ const GameJob = require("../../lib/classes/GameJob.js")
 
 app.get("/:token", async (request, response) => {
 	const game = global.games.get(request.params.token)
-	if (!game) return response.json(false)
+	if (!game) return response.status(404).json({ error: "Game is not running" })
 
-	const running = await game.Running()
-	if (!running && game) {
-		game.Close()
-		return response.json(false)
-	}
-
-	return response.json(true)
+	const status = await game.GetStatus()
+	return response.json(status[0]?.GetStatusResult)
 })
 
 module.exports = app
