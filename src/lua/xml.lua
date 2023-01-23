@@ -1,4 +1,4 @@
-local jobId, type, format, x, y, baseUrl, assetId = ...
+local jobId, type, format, x, y, baseUrl, assetId, mannequin = ...
 
 print(("[%s] Started RenderJob for type '%s' with assetId %d ..."):format(jobId, type, assetId))
 
@@ -8,12 +8,18 @@ game:GetService("InsertService"):SetAssetVersionUrl(baseUrl .. "/Asset/?assetver
 game:GetService("ContentProvider"):SetBaseUrl(baseUrl)
 game:GetService("ScriptContext").ScriptsDisabled = true
 
-local asset = game:GetObjects(("%s/asset?id=%d"):format(baseUrl, assetId))[1]
-asset.Parent = workspace
+if mannequin then
+    local Player = game.Players:CreateLocalPlayer(0)
+    Player.CharacterAppearance = ("%s/v1.1/asset-render/%d"):format(baseUrl, assetId)
+    Player:LoadCharacter(false)
+else
+    local asset = game:GetObjects(("%s/Asset/?id=%d"):format(baseUrl, assetId))[1]
+    asset.Parent = workspace
 
-local thumbnailCamera = asset:FindFirstChild("ThumbnailCamera")
-if thumbnailCamera ~= nil and thumbnailCamera.ClassName == "Camera" then
-    workspace.CurrentCamera = thumbnailCamera
+    local thumbnailCamera = asset:FindFirstChild("ThumbnailCamera")
+    if thumbnailCamera ~= nil and thumbnailCamera.ClassName == "Camera" then
+        workspace.CurrentCamera = thumbnailCamera
+    end
 end
 
 print(("[%s] Rendering ..."):format(jobId))

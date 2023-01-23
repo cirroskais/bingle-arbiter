@@ -100,6 +100,7 @@ class RenderJob extends Job {
 
 					{ type: "LUA_TSTRING", value: process.env.BASE_URL },
 					{ type: "LUA_TNUMBER", value: id },
+					{ type: "LUA_TBOOLEAN", value: "true" },
 				],
 			},
 		}).catch((e) => false)
