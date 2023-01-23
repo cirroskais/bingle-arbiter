@@ -10,7 +10,7 @@ global.games = new Map()
 
 setInterval(() => {
 	global.games.forEach(async (value, key) => {
-		if (!(await game.Running())) value.Stop()
+		if (!(await value.Running())) value.Stop()
 	})
 }, 15000)
 
