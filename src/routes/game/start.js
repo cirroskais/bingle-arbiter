@@ -4,6 +4,9 @@ const app = express.Router()
 const GameJob = require("../../lib/classes/GameJob.js")
 
 app.get("/:id", async (request, response) => {
+	const game = global.games.get(request.params.token)
+	if (game) return response.status(400).json({ error: "Game is running" })
+
 	const job = new GameJob()
 	const result = await job.StartGame(request.params.id).catch((_) => _)
 

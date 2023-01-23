@@ -1,7 +1,22 @@
 const express = require("express")
 const app = express.Router()
 
-app.get("/", (request, response) => response.status(200).json())
+function getGameIds() {
+	let gameIds = []
+
+	global.games.forEach((value, key) => {
+		gameIds.push(value.placeId)
+	})
+
+	return gameIds
+}
+
+app.get("/", (request, response) => {
+	return response.status(200).json({
+		runningGamesCount: global.games.size,
+		runningGames: getGameIds(),
+	})
+})
 
 app.all("*", (request, response) => response.status(404).json({ status: 404 }))
 

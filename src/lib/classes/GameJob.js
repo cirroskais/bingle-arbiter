@@ -15,6 +15,7 @@ class GameJob extends Job {
 			const { server_token, server_port, server_owner_id } = response.data
 
 			this.id = server_token
+			this.placeId = id
 
 			const started = await this.Start()
 			if (!started) throw new Error("RCCService failed to start")
