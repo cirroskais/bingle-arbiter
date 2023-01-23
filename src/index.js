@@ -5,14 +5,15 @@ const app = express()
 const logger = require("./lib/logger.js")
 
 if (process.platform == "linux") logger.warn("Game hosting might not be fully compatible with Linux")
+global.games = new Map()
 
-app.use("/place/start", require("./routes/place/start.js"))
-app.use("/place/stop", require("./routes/place/stop.js"))
-app.use("/place/execute", require("./routes/place/execute.js"))
-app.use("/place/renew", require("./routes/place/renew.js"))
+app.use("/game/start", require("./routes/game/start.js"))
+app.use("/game/stop", require("./routes/game/stop.js"))
+app.use("/game/execute", require("./routes/game/execute.js"))
+app.use("/game/renew", require("./routes/game/renew.js"))
 
 app.use("/render/asset", require("./routes/render/asset.js"))
-app.use("/render/place", require("./routes/render/place.js"))
+app.use("/render/game", require("./routes/render/game.js"))
 app.use("/render/headshot", require("./routes/render/headshot.js"))
 app.use("/render/bodyshot", require("./routes/render/bodyshot.js"))
 
