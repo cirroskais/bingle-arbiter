@@ -8,7 +8,7 @@ app.get("/:id", async (request, response) => {
 	if (game) return response.status(400).json({ error: "Game is running" })
 
 	const job = new GameJob()
-	const result = await job.StartGame(request.params.id).catch((_) => _)
+	job.StartGame(request.params.id).catch((_) => _)
 
 	global.games.set(job.id, job)
 	job.proc.once("exit", () => {
