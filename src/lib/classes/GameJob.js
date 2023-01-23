@@ -6,7 +6,7 @@ const logger = require("../logger.js")
 
 class GameJob extends Job {
 	constructor() {
-		super()
+		super({ expirationInSeconds: 360 })
 	}
 
 	StartGame(id) {
@@ -45,4 +45,3 @@ class GameJob extends Job {
 }
 
 module.exports = GameJob
-// a http://crapblox.cf/ -t 1 -j http://crapblox.cf//Game/JoinServer?Token=jRCfrKmwFfLBAvjNOQqNuOB210rjIvz4UfMhwIaY7teYGxXniECENL2vh8rvhSU2&PlaceId=10052

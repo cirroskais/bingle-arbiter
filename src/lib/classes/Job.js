@@ -2,6 +2,7 @@ const soap = require("soap")
 const { randomUUID } = require("crypto")
 
 const RCCService = require("./RCCService.js")
+const logger = require("../logger.js")
 
 class Job extends RCCService {
 	constructor({ id = randomUUID(), expirationInSeconds = 10, category = 0, cores = 1 } = {}) {
@@ -37,6 +38,7 @@ class Job extends RCCService {
 
 	async RenewLease(expirationInSeconds) {
 		if (!this.client) throw new Error("There is no client")
+		logger.info(`[${this.id}] Job renewed to ${expirationInSeconds} seconds`)
 		return await this.client.RenewLeaseAsync({ jobID: this.id, expirationInSeconds })
 	}
 

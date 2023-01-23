@@ -31,7 +31,7 @@ function update(LeavingPlayer)
 end
 
 function keepAlive(LeavingPlayer)
-    game:GetService("HttpService"):PostAsync(baseUrl .. "/API/KeepAlive", game:GetService("HttpService"):JSONEncode({
+    game:GetService("HttpService"):PostAsync("https://dungblx.cf/API/KeepAlive", game:GetService("HttpService"):JSONEncode({
         ["ServerIP"] = jobId,
         ["PlaceId"] = game.PlaceId,
         ["PlayerCount"] = #game:GetService("Players"):GetPlayers(),
@@ -114,8 +114,9 @@ end
 
 ------------------------------ RENEW GAME JOB SERVICE -------------------------------
 
-coroutine.resume(coroutine.create((function()
-    while wait(30) do
+spawn(function()
+    while true do
+	wait(10)
         if #game.Players:GetPlayers() == 0 then
             pcall(function() game:HttpGet(baseUrl .. "/arbiter/" .. jobId .. "/kill") end)
         else
@@ -123,7 +124,7 @@ coroutine.resume(coroutine.create((function()
             keepAlive()
         end
     end
-end)))
+end)
 
 ------------------------------END START GAME SHARED SCRIPT--------------------------
 

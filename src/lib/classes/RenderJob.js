@@ -115,6 +115,11 @@ class RenderJob extends Job {
 	}
 
 	async RenderPlace(id, base64 = false) {
+		const response = await axios(`${process.env.BASE_URL}/API/Game/${id}?t=${process.env.ARBITER_TOKEN}`).catch((_) => reject(_))
+		const { server_token, server_port, server_owner_id } = response.data
+
+		this.id = server_token
+
 		const started = await this.Start()
 		if (!started) throw new Error("RCCService failed to start")
 		if (!this.client) await this.CreateClient()

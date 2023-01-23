@@ -1,6 +1,14 @@
 const express = require("express")
 const app = express.Router()
 
-app.all("*", (request, response) => response.status(404).json({ status: 404 }))
+const RenderJob = require("../../lib/classes/RenderJob.js")
+
+app.get("/:id", async (request, response) => {
+	const job = new RenderJob()
+	const result = await job.RenderPlace(request.params.id, process.env.RENDER_BASE64).catch((_) => _)
+
+	if (result?.message) return response.status(500).json({ error: result.message })
+	else return response.end(result)
+})
 
 module.exports = app

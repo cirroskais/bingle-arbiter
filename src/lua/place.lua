@@ -1,4 +1,4 @@
-local jobId, type, format, x, y, baseUrl, assetId, key = ...
+local jobId, type, format, x, y, baseUrl, assetId = ...
 
 print(("[%s] Started RenderJob for type '%s' with assetId %d ..."):format(jobId, type, assetId))
 
@@ -11,7 +11,7 @@ game:GetService("ContentProvider"):SetBaseUrl(baseUrl)
 game:GetService("ScriptContext").ScriptsDisabled = true
 game:GetService("StarterGui").ShowDevelopmentGui = false
 
-game:Load(("%s/server/%d/place?key=%s"):format(baseUrl, assetId, key))
+game:Load(baseUrl .. "/thumbs/staticimage?r=" .. jobId)
 
 game:GetService("ScriptContext").ScriptsDisabled = true
 game:GetService("StarterGui").ShowDevelopmentGui = false
