@@ -3,12 +3,22 @@ const app = express.Router()
 
 const GameJob = require("../../lib/classes/GameJob.js")
 
+function getGameById(id) {
+	let game
+
+	global.games.forEach((value, key) => {
+		if (value.placeId == id) game = value
+	})
+
+	return game
+}
+
 app.get("/:id", async (request, response) => {
-	const game = global.games.get(request.params.token)
+	const game = global.games.get(getGameById(request.params.id).id)
 	if (game) return response.status(400).json({ error: "Game is running" })
 
 	const job = new GameJob()
-	job.StartGame(request.params.id).catch((_) => _)
+	const result = await job.StartGame(request.params.id).catch((_) => _)
 
 	global.games.set(job.id, job)
 	job.proc.once("exit", () => {
