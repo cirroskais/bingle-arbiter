@@ -9,7 +9,7 @@ global.games = new Map()
 
 app.use("/game/start", require("./routes/game/start.js"))
 app.use("/game/stop", require("./routes/game/stop.js"))
-app.use("/game/execute", require("./routes/game/execute.js"))
+app.use("/game/running", require("./routes/game/running.js"))
 app.use("/game/renew", require("./routes/game/renew.js"))
 
 app.use("/render/asset", require("./routes/render/asset.js"))
