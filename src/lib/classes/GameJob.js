@@ -45,7 +45,7 @@ class GameJob extends Job {
 	}
 
 	async Running() {
-		const result = await game.Execute("IsRunning", "return true").catch((_) => _)
+		const result = await this.Execute("IsRunning", "return true").catch((_) => _)
 		return !result?.message
 	}
 }
