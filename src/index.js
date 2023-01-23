@@ -11,7 +11,7 @@ global.games = new Map()
 setInterval(() => {
 	logger.info("Killing jobless RCCService instances...")
 	global.games.forEach(async (value, key) => {
-		if (!(await game.Running())) game.Stop()
+		if (!(await game.Running())) value.Stop()
 	})
 }, 15000)
 
