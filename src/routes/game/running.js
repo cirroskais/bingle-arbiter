@@ -5,7 +5,7 @@ const GameJob = require("../../lib/classes/GameJob.js")
 
 app.get("/:token", async (request, response) => {
 	const game = global.games.get(request.params.token)
-	return response.end(!!game)
+	return response.json(!!game)
 })
 
 module.exports = app
