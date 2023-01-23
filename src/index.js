@@ -9,7 +9,6 @@ if (process.platform == "linux") logger.warn("Game hosting might not be fully co
 global.games = new Map()
 
 setInterval(() => {
-	logger.info("Killing jobless RCCService instances...")
 	global.games.forEach(async (value, key) => {
 		if (!(await game.Running())) value.Stop()
 	})
