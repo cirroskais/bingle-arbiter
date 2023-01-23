@@ -33,8 +33,7 @@ class GameJob extends Job {
 						{ type: "LUA_TSTRING", value: process.env.BASE_URL },
 
 						{ type: "LUA_TNUMBER", value: id },
-						{ type: "LUA_TNUMBER", value: 53640 },
-						// { type: "LUA_TNUMBER", value: server_port },
+						{ type: "LUA_TNUMBER", value: server_port },
 						{ type: "LUA_TNUMBER", value: server_owner_id },
 					],
 				},
