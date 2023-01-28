@@ -11,7 +11,7 @@ game:GetService("ContentProvider"):SetBaseUrl(baseUrl)
 game:GetService("ScriptContext").ScriptsDisabled = true
 game:GetService("StarterGui").ShowDevelopmentGui = false
 
-game:Load(baseUrl .. "/thumbs/staticimage?r=" .. jobId)
+game:Load(("%s/asset/?id=%d"):format(baseUrl, assetId))
 
 game:GetService("ScriptContext").ScriptsDisabled = true
 game:GetService("StarterGui").ShowDevelopmentGui = false

@@ -8,17 +8,17 @@ game:GetService("ContentProvider"):SetBaseUrl(baseUrl)
 game:GetService("ScriptContext").ScriptsDisabled = true
 
 local Player = game.Players:CreateLocalPlayer(0)
-Player.CharacterAppearance = ("%s/v1.1/avatar-fetch/%d"):format(baseUrl, assetId)
+Player.CharacterAppearance = ("%s/Character?id=%d"):format(baseUrl, assetId)
 Player:LoadCharacter(false)
 
 game:GetService("RunService"):Run()
 
-Player.Character.Animate.Disabled = true 
+Player.Character.Animate.Disabled = true
 Player.Character.Torso.Anchored = true
 
-local gear = Player.Backpack:GetChildren()[1] 
-if gear then 
-    gear.Parent = Player.Character 
+local gear = Player.Backpack:GetChildren()[1]
+if gear then
+    gear.Parent = Player.Character
     Player.Character.Torso["Right Shoulder"].CurrentAngle = math.rad(90)
 end
 

@@ -9,7 +9,7 @@ game:GetService("ContentProvider"):SetBaseUrl(baseUrl)
 game:GetService("ScriptContext").ScriptsDisabled = true
 
 local Player = game.Players:CreateLocalPlayer(0)
-Player.CharacterAppearance = ("%s/v1.1/avatar-fetch/%d"):format(baseUrl, assetId)
+Player.CharacterAppearance = ("%s/Character?id=%d"):format(baseUrl, assetId)
 Player:LoadCharacter(false)
 
 game:GetService("RunService"):Run()
