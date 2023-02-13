@@ -1,5 +1,5 @@
 const axios = require("axios")
-const { readFileSync } = require("fs")
+const { readFile } = require("fs/promises")
 
 const Job = require("./Job.js")
 const logger = require("../logger.js")
@@ -25,7 +25,7 @@ class GameJob extends Job {
 
 			this.OpenJobEx({
 				name: this.id,
-				script: readFileSync(__dirname + "/../../lua/gameserver.lua", { encoding: "utf-8" }),
+				script: await readFile(__dirname + "/../../lua/gameserver.lua", { encoding: "utf-8" }),
 				arguments: {
 					LuaValue: [
 						{ type: "LUA_TSTRING", value: this.id },
