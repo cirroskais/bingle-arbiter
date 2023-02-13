@@ -19,6 +19,7 @@ app.use("/game/stop", require("./routes/game/stop.js"))
 app.use("/game/running", require("./routes/game/running.js"))
 app.use("/game/renew", require("./routes/game/renew.js"))
 app.use("/game/status", require("./routes/game/status.js"))
+app.use("/game/execute", require("./routes/game/execute.js"))
 
 app.use("/render/asset", require("./routes/render/asset.js"))
 app.use("/render/game", require("./routes/render/game.js"))
