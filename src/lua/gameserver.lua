@@ -41,14 +41,13 @@ function keepAlive(LeavingPlayer)
             ["PlayerList"] = update(LeavingPlayer),
         })
 
-        game:GetService("HttpService"):PostAsync("https://dungblx.cf/API/KeepAlive", body)
+        return game:GetService("HttpService"):PostAsync("https://dungblx.cf/API/KeepAlive", body)
     end)
 
     if not success then
-        local message = Instance.new("Message")
-        message.Text = "Ping Error: " .. result
-        message.Parent = workspace
-        game:GetService("Debris"):AddItem(message, 5)
+        local Hint = Instance.new("Hint")
+        Hint.Text = result
+        Hint.Parent = workspace
     end
 end
 
@@ -128,8 +127,7 @@ end
 ------------------------------ RENEW GAME JOB SERVICE -------------------------------
 
 spawn(function()
-    while true do
-	wait(30)
+    while wait(30) do
         if #game.Players:GetPlayers() == 0 then
             pcall(function() game:HttpGet(baseUrl .. "/arbiter/" .. jobId .. "/kill") end)
         else
