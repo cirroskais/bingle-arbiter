@@ -31,12 +31,25 @@ function update(LeavingPlayer)
 end
 
 function keepAlive(LeavingPlayer)
-    game:GetService("HttpService"):PostAsync("https://dungblx.cf/API/KeepAlive", game:GetService("HttpService"):JSONEncode({
-        ["ServerIP"] = jobId,
-        ["PlaceId"] = game.PlaceId,
-        ["PlayerCount"] = #game:GetService("Players"):GetPlayers(),
-        ["PlayerList"] = update(LeavingPlayer),
-    }))
+    local success, result = pcall(function()
+        game:GetService("HttpService").HttpEnabled = true
+
+        local body = game:GetService("HttpService"):JSONEncode({
+            ["ServerIP"] = jobId,
+            ["PlaceId"] = game.PlaceId,
+            ["PlayerCount"] = #game:GetService("Players"):GetPlayers(),
+            ["PlayerList"] = update(LeavingPlayer),
+        })
+
+        game:GetService("HttpService"):PostAsync("https://dungblx.cf/API/KeepAlive", body)
+    end)
+
+    if not success then
+        local message = Instance.new("Message")
+        message.Text = "Ping Error: " .. result
+        message.Parent = workspace
+        game:GetService("Debris"):AddItem(message, 5)
+    end
 end
 
 -----------------------------------END UTILITY FUNCTIONS -------------------------
