@@ -1,4 +1,4 @@
-const { readFileSync } = require("fs")
+const { readFile } = require("fs/promises")
 
 const Job = require("./Job.js")
 const logger = require("../logger.js")
@@ -17,7 +17,7 @@ class RenderJob extends Job {
 
 		const result = await this.OpenJobEx({
 			name: this.id,
-			script: readFileSync(__dirname + "/../../lua/headshot.lua", { encoding: "utf-8" }),
+			script: await readFile(__dirname + "/../../lua/headshot.lua", { encoding: "utf-8" }),
 			arguments: {
 				LuaValue: [
 					{ type: "LUA_TSTRING", value: this.id },
@@ -52,7 +52,7 @@ class RenderJob extends Job {
 
 		const result = await this.OpenJobEx({
 			name: this.id,
-			script: readFileSync(__dirname + "/../../lua/bodyshot.lua", { encoding: "utf-8" }),
+			script: await readFile(__dirname + "/../../lua/bodyshot.lua", { encoding: "utf-8" }),
 			arguments: {
 				LuaValue: [
 					{ type: "LUA_TSTRING", value: this.id },
@@ -87,7 +87,7 @@ class RenderJob extends Job {
 
 		const result = await this.OpenJobEx({
 			name: this.id,
-			script: readFileSync(__dirname + "/../../lua/xml.lua", { encoding: "utf-8" }),
+			script: await readFile(__dirname + "/../../lua/xml.lua", { encoding: "utf-8" }),
 			arguments: {
 				LuaValue: [
 					{ type: "LUA_TSTRING", value: this.id },
@@ -128,7 +128,7 @@ class RenderJob extends Job {
 
 		const result = await this.OpenJobEx({
 			name: this.id,
-			script: readFileSync(__dirname + "/../../lua/place.lua", { encoding: "utf-8" }),
+			script: await readFile(__dirname + "/../../lua/place.lua", { encoding: "utf-8" }),
 			arguments: {
 				LuaValue: [
 					{ type: "LUA_TSTRING", value: this.id },
