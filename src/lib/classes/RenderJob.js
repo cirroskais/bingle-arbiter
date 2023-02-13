@@ -43,12 +43,13 @@ class RenderJob extends Job {
 		return Buffer.from(result[0]?.OpenJobExResult?.LuaValue[0]?.value, "base64")
 	}
 
-	async RenderBodyshot(id, base64 = false) {
+	async RenderBodyshot(id, base64 = false, three_d = false) {
 		const started = await this.Start()
 		if (!started) throw new Error("RCCService failed to start")
 		if (!this.client) await this.CreateClient()
 
-		logger.info(`[${this.id}] Bodyshot RenderJob started for ${id}`)
+		if (three_d) logger.info(`[${this.id}] 3D Bodyshot RenderJob started for ${id}`)
+		else logger.info(`[${this.id}] Bodyshot RenderJob started for ${id}`)
 
 		const result = await this.OpenJobEx({
 			name: this.id,
@@ -58,7 +59,7 @@ class RenderJob extends Job {
 					{ type: "LUA_TSTRING", value: this.id },
 
 					{ type: "LUA_TSTRING", value: "Bodyshot" },
-					{ type: "LUA_TSTRING", value: process.env.RENDER_FORMAT },
+					{ type: "LUA_TSTRING", value: three_d ? "OBJ" : process.env.RENDER_FORMAT },
 
 					{ type: "LUA_TNUMBER", value: process.env.RENDER_USER_WIDTH },
 					{ type: "LUA_TNUMBER", value: process.env.RENDER_USER_HEIGHT },
@@ -69,21 +70,23 @@ class RenderJob extends Job {
 			},
 		}).catch((e) => false)
 
-		logger.info(`[${this.id}] Bodyshot RenderJob finished for ${id}`)
+		if (three_d) logger.info(`[${this.id}] 3D Bodyshot RenderJob finished for ${id}`)
+		else logger.info(`[${this.id}] Bodyshot RenderJob finished for ${id}`)
 
 		await this.Stop()
 
 		if (!result) return false
-		if (base64) return result[0].OpenJobExResult.LuaValue[0].value
+		if (base64 || three_d) return result[0].OpenJobExResult.LuaValue[0].value
 		return Buffer.from(result[0]?.OpenJobExResult?.LuaValue[0]?.value, "base64")
 	}
 
-	async RenderAsset(id, base64 = false) {
+	async RenderAsset(id, base64 = false, three_d = false) {
 		const started = await this.Start()
 		if (!started) throw new Error("RCCService failed to start")
 		if (!this.client) await this.CreateClient()
 
-		logger.info(`[${this.id}] Asset RenderJob started for ${id}`)
+		if (three_d) logger.info(`[${this.id}] 3D Asset RenderJob started for ${id}`)
+		else logger.info(`[${this.id}] Asset RenderJob started for ${id}`)
 
 		const result = await this.OpenJobEx({
 			name: this.id,
@@ -93,7 +96,7 @@ class RenderJob extends Job {
 					{ type: "LUA_TSTRING", value: this.id },
 
 					{ type: "LUA_TSTRING", value: "Asset" },
-					{ type: "LUA_TSTRING", value: process.env.RENDER_FORMAT },
+					{ type: "LUA_TSTRING", value: three_d ? "OBJ" : process.env.RENDER_FORMAT },
 
 					{ type: "LUA_TNUMBER", value: process.env.RENDER_ASSET_WIDTH },
 					{ type: "LUA_TNUMBER", value: process.env.RENDER_ASSET_HEIGHT },
@@ -105,12 +108,13 @@ class RenderJob extends Job {
 			},
 		}).catch((e) => false)
 
-		logger.info(`[${this.id}] Asset RenderJob finished for ${id}`)
+		if (three_d) logger.info(`[${this.id}] 3D Asset RenderJob finished for ${id}`)
+		else logger.info(`[${this.id}] Asset RenderJob finished for ${id}`)
 
 		await this.Stop()
 
 		if (!result) return false
-		if (base64) return result[0].OpenJobExResult.LuaValue[0].value
+		if (base64 || three_d) return result[0].OpenJobExResult.LuaValue[0].value
 		return Buffer.from(result[0]?.OpenJobExResult?.LuaValue[0]?.value, "base64")
 	}
 

@@ -25,6 +25,9 @@ app.use("/render/game", require("./routes/render/game.js"))
 app.use("/render/headshot", require("./routes/render/headshot.js"))
 app.use("/render/bodyshot", require("./routes/render/bodyshot.js"))
 
+app.use("/render/3d/asset", require("./routes/render/3d/asset.js"))
+app.use("/render/3d/user", require("./routes/render/3d/user.js"))
+
 app.use("*", require("./routes/index.js"))
 
 app.listen(process.env.PORT || 64989, () => {
