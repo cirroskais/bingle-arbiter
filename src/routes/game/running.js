@@ -9,7 +9,7 @@ app.get("/:token", async (request, response) => {
 
 	const running = await game.Running()
 	if (!running && game) {
-		game.Close()
+		game.Stop()
 		return response.json(false)
 	}
 
