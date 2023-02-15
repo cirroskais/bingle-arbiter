@@ -5,6 +5,8 @@ const waitPort = require("wait-port")
 const logger = require("../../lib/logger.js")
 const randport = require("../../lib/randport.js")
 
+const chalk = require('chalk')
+
 class RCCService extends EventEmitter {
 	constructor() {
 		super()
@@ -22,10 +24,11 @@ class RCCService extends EventEmitter {
 				}
 
 				this.proc.once("spawn", async () => {
-					logger.info(`[${this.port}] RCCService instance spawned`)
+					logger.info(`${chalk.gray(`[${this.port}]`)} RCCService instance spawned`)
 					const { open } = await waitPort({ host: "127.0.0.1", port: this.port, timeout: 5000, output: "silent" }).catch((e) => console.log(e))
 					if (!open || this.proc.exitCode !== null) {
-						logger.error(`[${this.port}] RCCService could not listen`)
+						this.proc.kill()
+						logger.error(`${chalk.gray(`[${this.port}]`)} RCCService could not listen`)
 						return resolve(false)
 					}
 
@@ -33,8 +36,8 @@ class RCCService extends EventEmitter {
 				})
 
 				this.proc.once("exit", () => {
-					this.proc = null
-					logger.info(`[${this.port}] RCCService instance exited`)
+					this.proc.kill()
+					logger.info(`${chalk.gray(`[${this.port}]`)} RCCService instance exited`)
 				})
 			} catch (_) {
 				resolve(false)
