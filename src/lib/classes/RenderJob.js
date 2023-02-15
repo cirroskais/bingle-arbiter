@@ -1,19 +1,19 @@
-const { readFile } = require("fs/promises")
+const { readFile } = require("fs/promises");
 
-const Job = require("./Job.js")
-const logger = require("../logger.js")
+const Job = require("./Job.js");
+const logger = require("../logger.js");
 
 class RenderJob extends Job {
 	constructor() {
-		super()
+		super();
 	}
 
-	async RenderHeadshot(id, base64 = false) {
-		const started = await this.Start()
-		if (!started) throw new Error("RCCService failed to start")
-		if (!this.client) await this.CreateClient()
+	async RenderHeadshot(id) {
+		const started = await this.Start();
+		if (!started) throw new Error("RCCService failed to start");
+		if (!this.client) await this.CreateClient();
 
-		logger.info(`[${this.id}] Headshot RenderJob started for ${id}`)
+		logger.info(`[${this.id}] Headshot RenderJob started for ${id}`);
 
 		const result = await this.OpenJobEx({
 			name: this.id,
@@ -32,24 +32,21 @@ class RenderJob extends Job {
 					{ type: "LUA_TNUMBER", value: id },
 				],
 			},
-		}).catch((e) => false)
+		}).catch((e) => false);
 
-		logger.info(`[${this.id}] Headshot RenderJob finished for ${id}`)
+		logger.info(`[${this.id}] Headshot RenderJob finished for ${id}`);
 
-		await this.Stop()
-
-		if (!result) return false
-		if (base64) return result[0].OpenJobExResult.LuaValue[0].value
-		return Buffer.from(result[0]?.OpenJobExResult?.LuaValue[0]?.value, "base64")
+		if (!result) return false;
+		return result[0]?.OpenJobExResult?.LuaValue[0]?.value;
 	}
 
-	async RenderBodyshot(id, base64 = false, three_d = false) {
-		const started = await this.Start()
-		if (!started) throw new Error("RCCService failed to start")
-		if (!this.client) await this.CreateClient()
+	async RenderBodyshot(id, three_d = false) {
+		const started = await this.Start();
+		if (!started) throw new Error("RCCService failed to start");
+		if (!this.client) await this.CreateClient();
 
-		if (three_d) logger.info(`[${this.id}] 3D Bodyshot RenderJob started for ${id}`)
-		else logger.info(`[${this.id}] Bodyshot RenderJob started for ${id}`)
+		if (three_d) logger.info(`[${this.id}] 3D Bodyshot RenderJob started for ${id}`);
+		else logger.info(`[${this.id}] Bodyshot RenderJob started for ${id}`);
 
 		const result = await this.OpenJobEx({
 			name: this.id,
@@ -68,25 +65,22 @@ class RenderJob extends Job {
 					{ type: "LUA_TNUMBER", value: id },
 				],
 			},
-		}).catch((e) => false)
+		}).catch((e) => false);
 
-		if (three_d) logger.info(`[${this.id}] 3D Bodyshot RenderJob finished for ${id}`)
-		else logger.info(`[${this.id}] Bodyshot RenderJob finished for ${id}`)
+		if (three_d) logger.info(`[${this.id}] 3D Bodyshot RenderJob finished for ${id}`);
+		else logger.info(`[${this.id}] Bodyshot RenderJob finished for ${id}`);
 
-		await this.Stop()
-
-		if (!result) return false
-		if (base64 || three_d) return result[0].OpenJobExResult.LuaValue[0].value
-		return Buffer.from(result[0]?.OpenJobExResult?.LuaValue[0]?.value, "base64")
+		if (!result) return false;
+		return result[0]?.OpenJobExResult?.LuaValue[0]?.value;
 	}
 
-	async RenderAsset(id, base64 = false, three_d = false) {
-		const started = await this.Start()
-		if (!started) throw new Error("RCCService failed to start")
-		if (!this.client) await this.CreateClient()
+	async RenderAsset(id, three_d = false) {
+		const started = await this.Start();
+		if (!started) throw new Error("RCCService failed to start");
+		if (!this.client) await this.CreateClient();
 
-		if (three_d) logger.info(`[${this.id}] 3D Asset RenderJob started for ${id}`)
-		else logger.info(`[${this.id}] Asset RenderJob started for ${id}`)
+		if (three_d) logger.info(`[${this.id}] 3D Asset RenderJob started for ${id}`);
+		else logger.info(`[${this.id}] Asset RenderJob started for ${id}`);
 
 		const result = await this.OpenJobEx({
 			name: this.id,
@@ -106,29 +100,26 @@ class RenderJob extends Job {
 					{ type: "LUA_TBOOLEAN", value: "true" },
 				],
 			},
-		}).catch((e) => false)
+		}).catch((e) => false);
 
-		if (three_d) logger.info(`[${this.id}] 3D Asset RenderJob finished for ${id}`)
-		else logger.info(`[${this.id}] Asset RenderJob finished for ${id}`)
+		if (three_d) logger.info(`[${this.id}] 3D Asset RenderJob finished for ${id}`);
+		else logger.info(`[${this.id}] Asset RenderJob finished for ${id}`);
 
-		await this.Stop()
-
-		if (!result) return false
-		if (base64 || three_d) return result[0].OpenJobExResult.LuaValue[0].value
-		return Buffer.from(result[0]?.OpenJobExResult?.LuaValue[0]?.value, "base64")
+		if (!result) return false;
+		return result[0]?.OpenJobExResult?.LuaValue[0]?.value;
 	}
 
-	async RenderPlace(id, base64 = false) {
-		const response = await axios(`${process.env.BASE_URL}/API/Game/${id}?t=${process.env.ARBITER_TOKEN}`).catch((_) => reject(_))
-		const { server_token, server_port, server_owner_id } = response.data
+	async RenderPlace(id) {
+		const response = await axios(`${process.env.BASE_URL}/API/Game/${id}?t=${process.env.ARBITER_TOKEN}`).catch((_) => reject(_));
+		const { server_token, server_port, server_owner_id } = response.data;
 
-		this.id = server_token
+		this.id = server_token;
 
-		const started = await this.Start()
-		if (!started) throw new Error("RCCService failed to start")
-		if (!this.client) await this.CreateClient()
+		const started = await this.Start();
+		if (!started) throw new Error("RCCService failed to start");
+		if (!this.client) await this.CreateClient();
 
-		logger.info(`[${this.id}] Place RenderJob started for ${id}`)
+		logger.info(`[${this.id}] Place RenderJob started for ${id}`);
 
 		const result = await this.OpenJobEx({
 			name: this.id,
@@ -147,16 +138,13 @@ class RenderJob extends Job {
 					{ type: "LUA_TNUMBER", value: id },
 				],
 			},
-		}).catch((e) => false)
+		}).catch((e) => false);
 
-		logger.info(`[${this.id}] Place RenderJob finished for ${id}`)
+		logger.info(`[${this.id}] Place RenderJob finished for ${id}`);
 
-		await this.Stop()
-
-		if (!result) return false
-		if (base64) return result[0].OpenJobExResult.LuaValue[0].value
-		return Buffer.from(result[0]?.OpenJobExResult?.LuaValue[0]?.value, "base64")
+		if (!result) return false;
+		return result[0]?.OpenJobExResult?.LuaValue[0]?.value;
 	}
 }
 
-module.exports = RenderJob
+module.exports = RenderJob;
