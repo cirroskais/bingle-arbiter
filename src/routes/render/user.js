@@ -8,15 +8,22 @@ app.get("/:id", async (request, response) => {
 	const job = new RenderJob();
 	let body = {};
 
-	const aseet = await job.RenderAsset(params.id).catch((_) => _);
-	if (aseet?.message) {
+	const headshot = await job.RenderHeadshot(params.id).catch((_) => _);
+	if (headshot?.message) {
 		job.Stop();
-		return response.status(500).json({ error: aseet.message });
+		return response.status(500).json({ error: headshot.message });
 	}
-	body.aseet = aseet;
+	body.headshot = headshot;
+
+	const bodyshot = await job.RenderBodyshot(params.id).catch((_) => _);
+	if (bodyshot?.message) {
+		job.Stop();
+		return response.status(500).json({ error: bodyshot.message });
+	}
+	body.bodyshot = bodyshot;
 
 	if (query.three_d) {
-		const three_d = await job.RenderAsset(params.id, true).catch((_) => _);
+		const three_d = await job.RenderBodyshot(params.id, true).catch((_) => _);
 		if (three_d?.message) {
 			job.Stop();
 			return response.status(500).json({ error: three_d.message });
