@@ -169,6 +169,44 @@ class RenderJob extends Job {
 		if (!result) return false
 		return result[0]?.OpenJobExResult?.LuaValue[0]?.value
 	}
+
+	async RenderTexture(id) {
+		this.id = randomUUID()
+
+		const running = this.started
+		if (!running) {
+			const started = await this.Start()
+			if (!started) throw new Error("RCCService failed to start")
+		}
+
+		if (!this.client) await this.CreateClient()
+
+		logger.info(`[${this.id}] Texture RenderJob started for ${id}`)
+
+		const result = await this.OpenJobEx({
+			name: this.id,
+			script: await readFile(__dirname + "/../../lua/texture.lua", { encoding: "utf-8" }),
+			arguments: {
+				LuaValue: [
+					{ type: "LUA_TSTRING", value: this.id },
+
+					{ type: "LUA_TSTRING", value: "Texture" },
+					{ type: "LUA_TSTRING", value: process.env.RENDER_FORMAT },
+
+					{ type: "LUA_TNUMBER", value: process.env.RENDER_USER_WIDTH },
+					{ type: "LUA_TNUMBER", value: process.env.RENDER_USER_HEIGHT },
+
+					{ type: "LUA_TSTRING", value: process.env.BASE_URL },
+					{ type: "LUA_TNUMBER", value: id },
+				],
+			},
+		}).catch((e) => false)
+
+		logger.info(`[${this.id}] Headshot RenderJob finished for ${id}`)
+
+		if (!result) return false
+		return result[0]?.OpenJobExResult?.LuaValue[0]?.value
+	}
 }
 
 module.exports = RenderJob
