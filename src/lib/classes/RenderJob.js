@@ -3,6 +3,7 @@ const chalk = require('chalk')
 
 const Job = require("./Job.js")
 const logger = require("../logger.js")
+const { randomUUID } = require("crypto")
 
 class RenderJob extends Job {
 	constructor() {
@@ -10,6 +11,8 @@ class RenderJob extends Job {
 	}
 
 	async RenderHeadshot(id) {
+		this.id = randomUUID()
+
 		const running = this.started
 		if (!running) {
 			const started = await this.Start()
@@ -46,6 +49,8 @@ class RenderJob extends Job {
 	}
 
 	async RenderBodyshot(id, three_d = false) {
+		this.id = randomUUID()
+
 		const running = this.started
 		if (!running) {
 			const started = await this.Start()
@@ -84,6 +89,8 @@ class RenderJob extends Job {
 	}
 
 	async RenderAsset(id, three_d = false) {
+		this.id = randomUUID()
+
 		const running = this.started
 		if (!running) {
 			const started = await this.Start()
