@@ -9,9 +9,13 @@ class RenderJob extends Job {
 		super()
 	}
 
-	async RenderHeadshot(id, base64 = false) {
-		const started = await this.Start()
-		if (!started) throw new Error("RCCService failed to start")
+	async RenderHeadshot(id) {
+		const running = this.started
+		if (!running) {
+			const started = await this.Start()
+			if (!started) throw new Error("RCCService failed to start")
+		}
+
 		if (!this.client) await this.CreateClient()
 
 		logger.info(`${chalk.gray(`[${this.id}]`)} Headshot RenderJob started for ${id}`)
@@ -37,16 +41,17 @@ class RenderJob extends Job {
 
 		logger.info(`${chalk.gray(`[${this.id}]`)} Headshot RenderJob finished for ${id}`)
 
-		await this.Stop()
-
 		if (!result) return false
-		if (base64) return result[0].OpenJobExResult.LuaValue[0].value
-		return Buffer.from(result[0]?.OpenJobExResult?.LuaValue[0]?.value, "base64")
+		return result[0]?.OpenJobExResult?.LuaValue[0]?.value
 	}
 
-	async RenderBodyshot(id, base64 = false, three_d = false) {
-		const started = await this.Start()
-		if (!started) throw new Error("RCCService failed to start")
+	async RenderBodyshot(id, three_d = false) {
+		const running = this.started
+		if (!running) {
+			const started = await this.Start()
+			if (!started) throw new Error("RCCService failed to start")
+		}
+
 		if (!this.client) await this.CreateClient()
 
 		if (three_d) logger.info(`${chalk.gray(`[${this.id}]`)} 3D Bodyshot RenderJob started for ${id}`)
@@ -74,16 +79,17 @@ class RenderJob extends Job {
 		if (three_d) logger.info(`${chalk.gray(`[${this.id}]`)} 3D Bodyshot RenderJob finished for ${id}`)
 		else logger.info(`${chalk.gray(`[${this.id}]`)} Bodyshot RenderJob finished for ${id}`)
 
-		await this.Stop()
-
 		if (!result) return false
-		if (base64 || three_d) return result[0].OpenJobExResult.LuaValue[0].value
-		return Buffer.from(result[0]?.OpenJobExResult?.LuaValue[0]?.value, "base64")
+		return result[0]?.OpenJobExResult?.LuaValue[0]?.value
 	}
 
-	async RenderAsset(id, base64 = false, three_d = false) {
-		const started = await this.Start()
-		if (!started) throw new Error("RCCService failed to start")
+	async RenderAsset(id, three_d = false) {
+		const running = this.started
+		if (!running) {
+			const started = await this.Start()
+			if (!started) throw new Error("RCCService failed to start")
+		}
+
 		if (!this.client) await this.CreateClient()
 
 		if (three_d) logger.info(`${chalk.gray(`[${this.id}]`)} 3D Asset RenderJob started for ${id}`)
@@ -112,21 +118,22 @@ class RenderJob extends Job {
 		if (three_d) logger.info(`${chalk.gray(`[${this.id}]`)} 3D Asset RenderJob finished for ${id}`)
 		else logger.info(`${chalk.gray(`[${this.id}]`)} Asset RenderJob finished for ${id}`)
 
-		await this.Stop()
-
 		if (!result) return false
-		if (base64 || three_d) return result[0].OpenJobExResult.LuaValue[0].value
-		return Buffer.from(result[0]?.OpenJobExResult?.LuaValue[0]?.value, "base64")
+		return result[0]?.OpenJobExResult?.LuaValue[0]?.value
 	}
 
-	async RenderPlace(id, base64 = false) {
+	async RenderPlace(id) {
 		const response = await axios(`${process.env.BASE_URL}/API/Game/${id}?t=${process.env.ARBITER_TOKEN}`).catch((_) => reject(_))
 		const { server_token, server_port, server_owner_id } = response.data
 
 		this.id = server_token
 
-		const started = await this.Start()
-		if (!started) throw new Error("RCCService failed to start")
+		const running = this.started
+		if (!running) {
+			const started = await this.Start()
+			if (!started) throw new Error("RCCService failed to start")
+		}
+
 		if (!this.client) await this.CreateClient()
 
 		logger.info(`${chalk.gray(`[${this.id}]`)} Place RenderJob started for ${id}`)
@@ -152,11 +159,8 @@ class RenderJob extends Job {
 
 		logger.info(`${chalk.gray(`[${this.id}]`)} Place RenderJob finished for ${id}`)
 
-		await this.Stop()
-
 		if (!result) return false
-		if (base64) return result[0].OpenJobExResult.LuaValue[0].value
-		return Buffer.from(result[0]?.OpenJobExResult?.LuaValue[0]?.value, "base64")
+		return result[0]?.OpenJobExResult?.LuaValue[0]?.value
 	}
 }
 

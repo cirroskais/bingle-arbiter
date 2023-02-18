@@ -5,7 +5,7 @@ const waitPort = require("wait-port")
 const logger = require("../../lib/logger.js")
 const randport = require("../../lib/randport.js")
 
-const chalk = require('chalk')
+const chalk = require("chalk")
 
 class RCCService extends EventEmitter {
 	constructor() {
@@ -18,9 +18,9 @@ class RCCService extends EventEmitter {
 				this.port = await randport.tcp()
 
 				if (process.platform == "win32") {
-					this.proc = child_process.spawn("RCCService.exe", ["-Console", "-PlaceId:-1", `-Port`, this.port], { cwd: process.env.RCCSERVICE })
+					this.proc = child_process.spawn("RCCService.exe", ["-Console", "-PlaceId:-1", `-Port`, this.port], { cwd: process.env.RCCSERVICE, stdio: "inherit" })
 				} else {
-					this.proc = child_process.spawn("wine", ["RCCService.exe", "-Console", "-PlaceId:-1", `-Port`, this.port], { cwd: process.env.RCCSERVICE })
+					this.proc = child_process.spawn("wine", ["RCCService.exe", "-Console", "-PlaceId:-1", `-Port`, this.port], { cwd: process.env.RCCSERVICE, stdio: "inherit" })
 				}
 
 				this.proc.once("spawn", async () => {
@@ -32,6 +32,7 @@ class RCCService extends EventEmitter {
 						return resolve(false)
 					}
 
+					this.started = true
 					return resolve(true)
 				})
 
