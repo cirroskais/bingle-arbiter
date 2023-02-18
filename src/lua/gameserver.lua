@@ -15,11 +15,8 @@ end
 
 pcall(function() settings().Network.UseInstancePacketCache = true end)
 pcall(function() settings().Network.UsePhysicsPacketCache = true end)
--- pcall(function() settings()["Task Scheduler"].PriorityMethod = Enum.PriorityMethod.FIFO end)
 pcall(function() settings()["Task Scheduler"].PriorityMethod = Enum.PriorityMethod.AccumulatedError end)
 
--- settings().Network.PhysicsSend = 1 -- 1==RoundRobin
--- settings().Network.PhysicsSend = Enum.PhysicsSendMethod.ErrorComputation2
 settings().Network.PhysicsSend = Enum.PhysicsSendMethod.TopNErrors
 settings().Network.ExperimentalPhysicsEnabled = true
 settings().Network.WaitingForCharacterLogRate = 100
@@ -53,11 +50,7 @@ if baseUrl ~= nil then
     pcall(function() loadfile(baseUrl .. "/Game/LoadPlaceInfo.ashx?PlaceId=" .. placeId)() end)
 end
 
--- pcall(function() game:GetService("NetworkServer"):SetIsPlayerAuthenticationRequired(true) end)
 settings().Diagnostics.LuaRamLimit = 0
--- settings().Network:SetThroughputSensitivity(0.08, 0.01)
--- settings().Network.SendRate = 35
--- settings().Network.PhysicsSend = 0  -- 1==RoundRobin
 
 game:GetService("Players").PlayerAdded:connect(function(player)
     print("Player " .. player.userId .. " added")
