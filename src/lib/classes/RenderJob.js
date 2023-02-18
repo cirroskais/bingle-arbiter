@@ -18,7 +18,7 @@ class RenderJob extends Job {
 
 		if (!this.client) await this.CreateClient()
 
-		logger.info(`${chalk.gray(`[${this.id}]`)} Headshot RenderJob started for ${id}`)
+		logger.info(`${chalk.gray(`${chalk.gray(`[${this.id}]`)}`)} Headshot RenderJob started for ${id}`)
 
 		const result = await this.OpenJobEx({
 			name: this.id,
@@ -39,7 +39,7 @@ class RenderJob extends Job {
 			},
 		}).catch((e) => false)
 
-		logger.info(`${chalk.gray(`[${this.id}]`)} Headshot RenderJob finished for ${id}`)
+		logger.info(`${chalk.gray(`${chalk.gray(`[${this.id}]`)}`)} Headshot RenderJob finished for ${id}`)
 
 		if (!result) return false
 		return result[0]?.OpenJobExResult?.LuaValue[0]?.value
@@ -54,8 +54,8 @@ class RenderJob extends Job {
 
 		if (!this.client) await this.CreateClient()
 
-		if (three_d) logger.info(`${chalk.gray(`[${this.id}]`)} 3D Bodyshot RenderJob started for ${id}`)
-		else logger.info(`${chalk.gray(`[${this.id}]`)} Bodyshot RenderJob started for ${id}`)
+		if (three_d) logger.info(`${chalk.gray(`${chalk.gray(`[${this.id}]`)}`)} 3D Bodyshot RenderJob started for ${id}`)
+		else logger.info(`${chalk.gray(`${chalk.gray(`[${this.id}]`)}`)} Bodyshot RenderJob started for ${id}`)
 
 		const result = await this.OpenJobEx({
 			name: this.id,
@@ -76,8 +76,8 @@ class RenderJob extends Job {
 			},
 		}).catch((e) => false)
 
-		if (three_d) logger.info(`${chalk.gray(`[${this.id}]`)} 3D Bodyshot RenderJob finished for ${id}`)
-		else logger.info(`${chalk.gray(`[${this.id}]`)} Bodyshot RenderJob finished for ${id}`)
+		if (three_d) logger.info(`${chalk.gray(`${chalk.gray(`[${this.id}]`)}`)} 3D Bodyshot RenderJob finished for ${id}`)
+		else logger.info(`${chalk.gray(`${chalk.gray(`[${this.id}]`)}`)} Bodyshot RenderJob finished for ${id}`)
 
 		if (!result) return false
 		return result[0]?.OpenJobExResult?.LuaValue[0]?.value
@@ -92,8 +92,8 @@ class RenderJob extends Job {
 
 		if (!this.client) await this.CreateClient()
 
-		if (three_d) logger.info(`${chalk.gray(`[${this.id}]`)} 3D Asset RenderJob started for ${id}`)
-		else logger.info(`${chalk.gray(`[${this.id}]`)} Asset RenderJob started for ${id}`)
+		if (three_d) logger.info(`${chalk.gray(`${chalk.gray(`[${this.id}]`)}`)} 3D Asset RenderJob started for ${id}`)
+		else logger.info(`${chalk.gray(`${chalk.gray(`[${this.id}]`)}`)} Asset RenderJob started for ${id}`)
 
 		const result = await this.OpenJobEx({
 			name: this.id,
@@ -115,8 +115,8 @@ class RenderJob extends Job {
 			},
 		}).catch((e) => false)
 
-		if (three_d) logger.info(`${chalk.gray(`[${this.id}]`)} 3D Asset RenderJob finished for ${id}`)
-		else logger.info(`${chalk.gray(`[${this.id}]`)} Asset RenderJob finished for ${id}`)
+		if (three_d) logger.info(`${chalk.gray(`${chalk.gray(`[${this.id}]`)}`)} 3D Asset RenderJob finished for ${id}`)
+		else logger.info(`${chalk.gray(`${chalk.gray(`[${this.id}]`)}`)} Asset RenderJob finished for ${id}`)
 
 		if (!result) return false
 		return result[0]?.OpenJobExResult?.LuaValue[0]?.value
@@ -136,7 +136,7 @@ class RenderJob extends Job {
 
 		if (!this.client) await this.CreateClient()
 
-		logger.info(`${chalk.gray(`[${this.id}]`)} Place RenderJob started for ${id}`)
+		logger.info(`${chalk.gray(`${chalk.gray(`[${this.id}]`)}`)} Place RenderJob started for ${id}`)
 
 		const result = await this.OpenJobEx({
 			name: this.id,
@@ -157,7 +157,7 @@ class RenderJob extends Job {
 			},
 		}).catch((e) => false)
 
-		logger.info(`${chalk.gray(`[${this.id}]`)} Place RenderJob finished for ${id}`)
+		logger.info(`${chalk.gray(`${chalk.gray(`[${this.id}]`)}`)} Place RenderJob finished for ${id}`)
 
 		if (!result) return false
 		return result[0]?.OpenJobExResult?.LuaValue[0]?.value
