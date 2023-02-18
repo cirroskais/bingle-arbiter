@@ -32,6 +32,7 @@ class RCCService extends EventEmitter {
 						return resolve(false)
 					}
 
+					this.started = true
 					return resolve(true)
 				})
 
