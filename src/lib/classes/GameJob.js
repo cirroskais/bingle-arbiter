@@ -31,7 +31,6 @@ class GameJob extends Job {
 
 						{ type: "LUA_TNUMBER", value: id },
 						{ type: "LUA_TNUMBER", value: 50001 },
-						{ type: "LUA_TNUMBER", value: 0 },
 					],
 				},
 			}).catch((e) => reject(e))
