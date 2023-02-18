@@ -1,4 +1,5 @@
 const { readFile } = require("fs/promises")
+const chalk = require('chalk')
 
 const Job = require("./Job.js")
 const logger = require("../logger.js")
@@ -20,7 +21,7 @@ class RenderJob extends Job {
 
 		if (!this.client) await this.CreateClient()
 
-		logger.info(`[${this.id}] Headshot RenderJob started for ${id}`)
+		logger.info(`${chalk.gray(`${chalk.gray(`[${this.id}]`)}`)} Headshot RenderJob started for ${id}`)
 
 		const result = await this.OpenJobEx({
 			name: this.id,
@@ -41,7 +42,7 @@ class RenderJob extends Job {
 			},
 		}).catch((e) => false)
 
-		logger.info(`[${this.id}] Headshot RenderJob finished for ${id}`)
+		logger.info(`${chalk.gray(`${chalk.gray(`[${this.id}]`)}`)} Headshot RenderJob finished for ${id}`)
 
 		if (!result) return false
 		return result[0]?.OpenJobExResult?.LuaValue[0]?.value
@@ -58,8 +59,8 @@ class RenderJob extends Job {
 
 		if (!this.client) await this.CreateClient()
 
-		if (three_d) logger.info(`[${this.id}] 3D Bodyshot RenderJob started for ${id}`)
-		else logger.info(`[${this.id}] Bodyshot RenderJob started for ${id}`)
+		if (three_d) logger.info(`${chalk.gray(`${chalk.gray(`[${this.id}]`)}`)} 3D Bodyshot RenderJob started for ${id}`)
+		else logger.info(`${chalk.gray(`${chalk.gray(`[${this.id}]`)}`)} Bodyshot RenderJob started for ${id}`)
 
 		const result = await this.OpenJobEx({
 			name: this.id,
@@ -80,8 +81,8 @@ class RenderJob extends Job {
 			},
 		}).catch((e) => false)
 
-		if (three_d) logger.info(`[${this.id}] 3D Bodyshot RenderJob finished for ${id}`)
-		else logger.info(`[${this.id}] Bodyshot RenderJob finished for ${id}`)
+		if (three_d) logger.info(`${chalk.gray(`${chalk.gray(`[${this.id}]`)}`)} 3D Bodyshot RenderJob finished for ${id}`)
+		else logger.info(`${chalk.gray(`${chalk.gray(`[${this.id}]`)}`)} Bodyshot RenderJob finished for ${id}`)
 
 		if (!result) return false
 		return result[0]?.OpenJobExResult?.LuaValue[0]?.value
@@ -98,8 +99,8 @@ class RenderJob extends Job {
 
 		if (!this.client) await this.CreateClient()
 
-		if (three_d) logger.info(`[${this.id}] 3D Asset RenderJob started for ${id}`)
-		else logger.info(`[${this.id}] Asset RenderJob started for ${id}`)
+		if (three_d) logger.info(`${chalk.gray(`${chalk.gray(`[${this.id}]`)}`)} 3D Asset RenderJob started for ${id}`)
+		else logger.info(`${chalk.gray(`${chalk.gray(`[${this.id}]`)}`)} Asset RenderJob started for ${id}`)
 
 		const result = await this.OpenJobEx({
 			name: this.id,
@@ -121,8 +122,8 @@ class RenderJob extends Job {
 			},
 		}).catch((e) => false)
 
-		if (three_d) logger.info(`[${this.id}] 3D Asset RenderJob finished for ${id}`)
-		else logger.info(`[${this.id}] Asset RenderJob finished for ${id}`)
+		if (three_d) logger.info(`${chalk.gray(`${chalk.gray(`[${this.id}]`)}`)} 3D Asset RenderJob finished for ${id}`)
+		else logger.info(`${chalk.gray(`${chalk.gray(`[${this.id}]`)}`)} Asset RenderJob finished for ${id}`)
 
 		if (!result) return false
 		return result[0]?.OpenJobExResult?.LuaValue[0]?.value
@@ -142,7 +143,7 @@ class RenderJob extends Job {
 
 		if (!this.client) await this.CreateClient()
 
-		logger.info(`[${this.id}] Place RenderJob started for ${id}`)
+		logger.info(`${chalk.gray(`${chalk.gray(`[${this.id}]`)}`)} Place RenderJob started for ${id}`)
 
 		const result = await this.OpenJobEx({
 			name: this.id,
@@ -163,7 +164,45 @@ class RenderJob extends Job {
 			},
 		}).catch((e) => false)
 
-		logger.info(`[${this.id}] Place RenderJob finished for ${id}`)
+		logger.info(`${chalk.gray(`${chalk.gray(`[${this.id}]`)}`)} Place RenderJob finished for ${id}`)
+
+		if (!result) return false
+		return result[0]?.OpenJobExResult?.LuaValue[0]?.value
+	}
+
+	async RenderTexture(id) {
+		this.id = randomUUID()
+
+		const running = this.started
+		if (!running) {
+			const started = await this.Start()
+			if (!started) throw new Error("RCCService failed to start")
+		}
+
+		if (!this.client) await this.CreateClient()
+
+		logger.info(`[${this.id}] Texture RenderJob started for ${id}`)
+
+		const result = await this.OpenJobEx({
+			name: this.id,
+			script: await readFile(__dirname + "/../../lua/texture.lua", { encoding: "utf-8" }),
+			arguments: {
+				LuaValue: [
+					{ type: "LUA_TSTRING", value: this.id },
+
+					{ type: "LUA_TSTRING", value: "Texture" },
+					{ type: "LUA_TSTRING", value: process.env.RENDER_FORMAT },
+
+					{ type: "LUA_TNUMBER", value: process.env.RENDER_USER_WIDTH },
+					{ type: "LUA_TNUMBER", value: process.env.RENDER_USER_HEIGHT },
+
+					{ type: "LUA_TSTRING", value: process.env.BASE_URL },
+					{ type: "LUA_TNUMBER", value: id },
+				],
+			},
+		}).catch((e) => false)
+
+		logger.info(`[${this.id}] Headshot RenderJob finished for ${id}`)
 
 		if (!result) return false
 		return result[0]?.OpenJobExResult?.LuaValue[0]?.value
