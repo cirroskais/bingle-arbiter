@@ -4,11 +4,29 @@ const app = express.Router()
 const RenderJob = require("../../lib/classes/RenderJob.js")
 
 app.get("/:id", async (request, response) => {
+	const { params, query } = request
 	const job = new RenderJob()
-	const result = await job.RenderAsset(request.params.id, process.env.RENDER_BASE64).catch((_) => _)
+	let body = {}
 
-	if (result?.message) return response.status(500).json({ error: result.message })
-	else return response.end(result)
+	const asset = await job.RenderAsset(params.id).catch((_) => _)
+	if (asset?.message) {
+		job.Stop()
+		return response.status(500).json({ error: asset.message })
+	}
+	body.asset = asset
+
+	if (query.three_d) {
+		const three_d = await job.RenderAsset(params.id, true).catch((_) => _)
+		if (three_d?.message) {
+			job.Stop()
+			return response.status(500).json({ error: three_d.message })
+		}
+		body.three_d = three_d
+	}
+
+	job.Stop()
+
+	return response.json(body)
 })
 
 module.exports = app
