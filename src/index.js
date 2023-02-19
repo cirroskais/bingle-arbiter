@@ -19,7 +19,7 @@ const validateQueryParam = (req, res, next) => {
   if (req.query.hasOwnProperty(myQueryParam)) { 
     next();
   } else {
-    res.status(400).send(`The ${myQueryParam} query parameter is missing`);
+    res.status(400).send(`This is just a normal site, nothing is located here...`);
   }
 }
 
