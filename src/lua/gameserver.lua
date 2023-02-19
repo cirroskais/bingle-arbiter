@@ -156,10 +156,5 @@ end)
 
 
 
-<<<<<<< HEAD
 -- StartGame -- 
-=======
-------------------------------END START GAME SHARED SCRIPT--------------------------
-
->>>>>>> master
 game:GetService("RunService"):Run()
