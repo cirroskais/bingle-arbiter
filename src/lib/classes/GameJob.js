@@ -30,9 +30,7 @@ class GameJob extends Job {
 						{ type: "LUA_TSTRING", value: process.env.BASE_URL },
 
 						{ type: "LUA_TNUMBER", value: id },
-						{ type: "LUA_TNUMBER", value: 0 },
-						{ type: "LUA_TNUMBER", value: 0 },
-						{ type: "LUA_TSTRING", value: process.env.ARBITER_TOKEN },
+						{ type: "LUA_TNUMBER", value: 50001 },
 					],
 				},
 			}).catch((e) => reject(e))

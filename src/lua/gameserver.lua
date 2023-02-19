@@ -1,16 +1,12 @@
-local jobId, type, baseUrl, placeId, port, owner, key = ...
+local jobId, type, baseUrl, placeId, port = ...
 
 ------------------- UTILITY FUNCTIONS --------------------------
-
-
 function waitForChild(parent, childName)
-	while true do
-		local child = parent:findFirstChild(childName)
-		if child then
-			return child
-		end
-		parent.ChildAdded:wait()
-	end
+    while true do
+        local child = parent:findFirstChild(childName)
+        if child then return child end
+        parent.ChildAdded:wait()
+    end
 end
 
 -----------------------------------END UTILITY FUNCTIONS -------------------------
@@ -38,7 +34,7 @@ local scriptContext = game:GetService('ScriptContext')
 pcall(function() scriptContext:AddStarterScript(37801172) end)
 scriptContext.ScriptsDisabled = true
 
-game:SetPlaceID(assetId, false)
+game:SetPlaceID(placeId, false)
 game:GetService("ChangeHistoryService"):SetEnabled(false)
 
 -- establish this peer as the Server
@@ -160,5 +156,10 @@ end)
 
 
 
+<<<<<<< HEAD
 -- StartGame -- 
+=======
+------------------------------END START GAME SHARED SCRIPT--------------------------
+
+>>>>>>> master
 game:GetService("RunService"):Run()
