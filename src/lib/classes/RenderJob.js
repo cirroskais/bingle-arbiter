@@ -1,5 +1,5 @@
 const { readFile } = require("fs/promises")
-const chalk = require('chalk')
+const chalk = require("chalk")
 
 const Job = require("./Job.js")
 const logger = require("../logger.js")
@@ -31,7 +31,7 @@ class RenderJob extends Job {
 					{ type: "LUA_TSTRING", value: this.id },
 
 					{ type: "LUA_TSTRING", value: "Headshot" },
-					{ type: "LUA_TSTRING", value: process.env.RENDER_FORMAT },
+					{ type: "LUA_TSTRING", value: "PNG" },
 
 					{ type: "LUA_TNUMBER", value: process.env.RENDER_USER_WIDTH },
 					{ type: "LUA_TNUMBER", value: process.env.RENDER_USER_HEIGHT },
@@ -70,7 +70,7 @@ class RenderJob extends Job {
 					{ type: "LUA_TSTRING", value: this.id },
 
 					{ type: "LUA_TSTRING", value: "Bodyshot" },
-					{ type: "LUA_TSTRING", value: three_d ? "OBJ" : process.env.RENDER_FORMAT },
+					{ type: "LUA_TSTRING", value: three_d ? "OBJ" : "PNG" },
 
 					{ type: "LUA_TNUMBER", value: process.env.RENDER_USER_WIDTH },
 					{ type: "LUA_TNUMBER", value: process.env.RENDER_USER_HEIGHT },
@@ -110,7 +110,7 @@ class RenderJob extends Job {
 					{ type: "LUA_TSTRING", value: this.id },
 
 					{ type: "LUA_TSTRING", value: "Asset" },
-					{ type: "LUA_TSTRING", value: three_d ? "OBJ" : process.env.RENDER_FORMAT },
+					{ type: "LUA_TSTRING", value: three_d ? "OBJ" : "PNG" },
 
 					{ type: "LUA_TNUMBER", value: process.env.RENDER_ASSET_WIDTH },
 					{ type: "LUA_TNUMBER", value: process.env.RENDER_ASSET_HEIGHT },
@@ -153,7 +153,7 @@ class RenderJob extends Job {
 					{ type: "LUA_TSTRING", value: this.id },
 
 					{ type: "LUA_TSTRING", value: "Place" },
-					{ type: "LUA_TSTRING", value: process.env.RENDER_FORMAT },
+					{ type: "LUA_TSTRING", value: "PNG" },
 
 					{ type: "LUA_TNUMBER", value: process.env.RENDER_PLACE_WIDTH },
 					{ type: "LUA_TNUMBER", value: process.env.RENDER_PLACE_HEIGHT },
@@ -191,7 +191,7 @@ class RenderJob extends Job {
 					{ type: "LUA_TSTRING", value: this.id },
 
 					{ type: "LUA_TSTRING", value: "Texture" },
-					{ type: "LUA_TSTRING", value: process.env.RENDER_FORMAT },
+					{ type: "LUA_TSTRING", value: "PNG" },
 
 					{ type: "LUA_TNUMBER", value: process.env.RENDER_USER_WIDTH },
 					{ type: "LUA_TNUMBER", value: process.env.RENDER_USER_HEIGHT },
