@@ -12,17 +12,6 @@ app.use(({ query }, response, next) => {
 	next()
 })
 
-const validateQueryParam = (req, res, next) => {
-  const myQueryParam = process.env.accessKey; 
-  if (req.query.hasOwnProperty(myQueryParam)) { 
-    next();
-  } else {
-    res.status(400).send(`This is just a normal site, nothing is located here...`);
-  }
-}
-
-app.use(validateQueryParam);
-
 app.use("/game/start", require("./routes/game/start.js"))
 app.use("/game/stop", require("./routes/game/stop.js"))
 app.use("/game/running", require("./routes/game/running.js"))
