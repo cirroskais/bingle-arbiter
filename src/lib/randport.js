@@ -14,7 +14,7 @@ exports.tcp = () => {
 exports.udp = () => {
 	return new Promise((resolve) => {
 		const server = dgram.createSocket()
-		server.bind(0, () => {
+		server.bind(Math.random() * (60_000 - 50_000) + 50_000, () => {
 			const port = server.address().port
 			server.close((err) => resolve(port))
 		})
