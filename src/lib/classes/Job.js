@@ -5,7 +5,7 @@ const RCCService = require("./RCCService.js")
 const logger = require("../logger.js")
 
 class Job extends RCCService {
-	constructor({ id = randomUUID(), expirationInSeconds = 10, category = 0, cores = 1 } = {}) {
+	constructor({ id = randomUUID(), expirationInSeconds = 60, category = 0, cores = 1 } = {}) {
 		super()
 		this.id = id
 		this.expirationInSeconds = expirationInSeconds

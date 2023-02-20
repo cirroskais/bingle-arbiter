@@ -136,11 +136,6 @@ class RenderJob extends Job {
 	}
 
 	async RenderPlace(id) {
-		const response = await axios(`${process.env.BASE_URL}/API/Game/${id}?t=${process.env.ARBITER_TOKEN}`).catch((_) => reject(_))
-		const { server_token, server_port, server_owner_id } = response.data
-
-		this.id = server_token
-
 		const running = this.started
 		if (!running) {
 			const started = await this.Start()
@@ -166,6 +161,7 @@ class RenderJob extends Job {
 
 					{ type: "LUA_TSTRING", value: process.env.BASE_URL },
 					{ type: "LUA_TNUMBER", value: id },
+					{ type: "LUA_TSTRING", value: process.env.ARBITER_TOKEN },
 				],
 			},
 		}).catch((e) => false)
