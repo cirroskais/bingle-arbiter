@@ -4,11 +4,13 @@ const app = express.Router()
 const RenderJob = require("../../lib/classes/RenderJob.js")
 
 app.get("/:id", async (request, response) => {
+	const { params, query } = request
 	const job = new RenderJob()
-	const result = await job.RenderPlace(request.params.id, process.env.RENDER_BASE64).catch((_) => _)
 
-	if (result?.message) return response.status(500).json({ error: result.message })
-	else return response.end(result)
+	const game = await job.RenderPlace(params.id).catch((_) => _)
+	if (game?.message) return response.status(500).json({ error: game.message })
+
+	return response.end(game)
 })
 
 module.exports = app

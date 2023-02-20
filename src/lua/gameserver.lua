@@ -1,13 +1,10 @@
-local jobId, type, baseUrl, placeId, port, owner = ...
+local jobId, type, baseUrl, placeId, port = ...
 
 ------------------- UTILITY FUNCTIONS --------------------------
-
 function waitForChild(parent, childName)
     while true do
         local child = parent:findFirstChild(childName)
-        if child then
-            return child
-        end
+        if child then return child end
         parent.ChildAdded:wait()
     end
 end
@@ -66,20 +63,16 @@ pcall(function() settings().Diagnostics:LegacyScriptMode() end)
 
 -----------------------------------START GAME SHARED SCRIPT------------------------------
 
-local assetId = placeId
-
 local scriptContext = game:GetService("ScriptContext")
 pcall(function() scriptContext:AddStarterScript(37801172) end)
 scriptContext.ScriptsDisabled = true
 
-game:SetPlaceID(assetId, false)
+game:SetPlaceID(placeId, false)
 game:GetService("ChangeHistoryService"):SetEnabled(false)
-game:SetCreatorId(owner, Enum.CreatorType.User)
-game:GetService("HttpService").HttpEnabled = true
 
 local ns = game:GetService("NetworkServer")
 
-if baseUrl~=nil then
+if baseUrl ~= nil then
     pcall(function() game:GetService("Players"):SetAbuseReportUrl(baseUrl .. "/AbuseReport/InGameChatHandler.ashx") end)
     pcall(function() game:GetService("ScriptInformationProvider"):SetAssetUrl(baseUrl .. "/Asset/") end)
     pcall(function() game:GetService("ContentProvider"):SetBaseUrl(baseUrl .. "/") end)
@@ -99,29 +92,16 @@ end
 settings().Diagnostics.LuaRamLimit = 0
 
 game:GetService("Players").PlayerAdded:connect(function(player)
-    keepAlive()
     print("Player " .. player.userId .. " added")
-
-    player.CharacterAdded:connect(function(c)
-        game:GetObjects("rbxasset://fonts/characterCameraScript.rbxmx")[1].Parent = c
-        game:GetObjects("rbxasset://fonts/characterControlScript.rbxmx")[1].Parent = c
-
-        for i,v in pairs(c:GetChildren()) do
-            print(v.Name)
-        end
-
-        print(c.Animate.Source)
-    end)
 end)
 
 game:GetService("Players").PlayerRemoving:connect(function(player)
-    keepAlive(player)
     print("Player " .. player.userId .. " leaving")
 end)
 
-if placeId~=nil and baseUrl~=nil then
+if placeId ~= nil and baseUrl ~= nil then
     wait()
-    game:Load(baseUrl .. "/thumbs/staticimage?r=" .. jobId)
+    game:Load(baseUrl .. "/asset/?id=" .. placeId)
 end
 
 ------------------------------ RENEW GAME JOB SERVICE -------------------------------
@@ -143,5 +123,7 @@ ns:Start(port)
 
 scriptContext:SetTimeout(10)
 scriptContext.ScriptsDisabled = false
+
+------------------------------END START GAME SHARED SCRIPT--------------------------
 
 game:GetService("RunService"):Run()
