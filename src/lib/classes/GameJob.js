@@ -3,6 +3,7 @@ const { readFile } = require("fs/promises")
 
 const Job = require("./Job.js")
 const logger = require("../logger.js")
+const randport = require("../randport.js")
 
 class GameJob extends Job {
 	constructor() {
@@ -19,6 +20,8 @@ class GameJob extends Job {
 
 			logger.info(`[${this.id}] GameJob started for ${id}`)
 
+			const port = await randport.udp()
+
 			this.OpenJobEx({
 				name: this.id,
 				script: await readFile(__dirname + "/../../lua/gameserver.lua", { encoding: "utf-8" }),
@@ -30,12 +33,12 @@ class GameJob extends Job {
 						{ type: "LUA_TSTRING", value: process.env.BASE_URL },
 
 						{ type: "LUA_TNUMBER", value: id },
-						{ type: "LUA_TNUMBER", value: 50001 },
+						{ type: "LUA_TNUMBER", value: port },
 					],
 				},
 			}).catch((e) => reject(e))
 
-			resolve()
+			resolve(port)
 		})
 	}
 
