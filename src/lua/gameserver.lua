@@ -41,7 +41,6 @@ if baseUrl ~= nil then
 	pcall(function() game:GetService("Players"):SetAbuseReportUrl(baseUrl .. "/AbuseReport/InGameChatHandler.ashx") end)
 	pcall(function() game:GetService("ScriptInformationProvider"):SetAssetUrl(baseUrl .. "/Asset/") end)
 	pcall(function() game:GetService("ContentProvider"):SetBaseUrl(baseUrl .. "/") end)
---	pcall(function() game:GetService("Players"):SetChatFilterUrl(baseUrl .. "/Game/ChatFilter.ashx") end)
 
 	game:GetService("BadgeService"):SetPlaceId(placeId)
 
@@ -59,8 +58,8 @@ if baseUrl ~= nil then
 end
 
 pcall(function() game:GetService("NetworkServer"):SetIsPlayerAuthenticationRequired(true) end)
-settings().Diagnostics.LuaRamLimit = 0
 
+settings().Diagnostics.LuaRamLimit = 0
 
 game:GetService("Players").PlayerAdded:connect(function(player)
 	print("Player " .. player.userId .. " added")
@@ -79,10 +78,8 @@ end
 
 ns:Start(port)
 
-local success, error = spawn(function()
+spawn(function()
 	while wait(5) do
-		-- UGLY HACK BECAUSE FOR SOME REASON HTTPPOST AND POSTASYNC CRASHES??
-		-- WHAT THE FUCK?
 		local playerIds = ""
 		local players = game.Players:GetChildren()
 		for i, player in pairs(players) do
@@ -95,12 +92,12 @@ local success, error = spawn(function()
 			end
 		end
 
-		game:HttpGet('http://kapish.fun/server/ping/' .. placeId .. '?players=' .. playerIds .. "&key=" .. key)
+		pcall(function() game:HttpGet('http://kapish.fun/server/ping/' .. placeId .. '?players=' .. playerIds .. "&key=" .. key) end)
 	end
 end)
 
 spawn(function()
-	while wait(10) do
+	while wait(60) do
 		if #game.Players:GetPlayers() == 0 then
 			pcall(function() game:HttpGet("https://kapish.fun/dielol/" .. placeId.."?key=" .. key) end)
 		end
