@@ -1,5 +1,6 @@
 const { readFile } = require("fs/promises")
 const chalk = require("chalk")
+const axios = require("axios")
 
 const Job = require("./Job.js")
 const logger = require("../logger.js")
@@ -136,6 +137,12 @@ class RenderJob extends Job {
 	}
 
 	async RenderPlace(id) {
+		const response = await axios(`${process.env.BASE_URL}/API/Game/${id}?t=${process.env.ARBITER_TOKEN}`).catch((_) => reject(_))
+		const { server_token } = response.data
+
+		this.serverToken = server_token
+		console.log(`${process.env.BASE_URL}/API/Game/${id}?t=${process.env.ARBITER_TOKEN}`, server_token)
+
 		const running = this.started
 		if (!running) {
 			const started = await this.Start()
@@ -161,7 +168,7 @@ class RenderJob extends Job {
 
 					{ type: "LUA_TSTRING", value: process.env.BASE_URL },
 					{ type: "LUA_TNUMBER", value: id },
-					{ type: "LUA_TSTRING", value: process.env.ARBITER_TOKEN },
+					{ type: "LUA_TSTRING", value: this.serverToken },
 				],
 			},
 		}).catch((e) => false)

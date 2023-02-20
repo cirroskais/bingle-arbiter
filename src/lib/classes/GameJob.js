@@ -12,6 +12,10 @@ class GameJob extends Job {
 
 	StartGame(id) {
 		return new Promise(async (resolve, reject) => {
+			const response = await axios(`${process.env.BASE_URL}/API/Game/${id}?t=${process.env.ARBITER_TOKEN}`).catch((_) => reject(_))
+			const { server_token, server_port } = response.data
+
+			this.serverToken = server_token
 			this.placeId = id
 
 			const started = await this.Start()
@@ -19,8 +23,6 @@ class GameJob extends Job {
 			if (!this.client) await this.CreateClient()
 
 			logger.info(`[${this.id}] GameJob started for ${id}`)
-
-			const port = await randport.udp()
 
 			this.OpenJobEx({
 				name: this.id,
@@ -33,12 +35,13 @@ class GameJob extends Job {
 						{ type: "LUA_TSTRING", value: process.env.BASE_URL },
 
 						{ type: "LUA_TNUMBER", value: id },
-						{ type: "LUA_TNUMBER", value: port },
+						{ type: "LUA_TNUMBER", value: server_port },
+						{ type: "LUA_TSTRING", value: this.serverToken },
 					],
 				},
 			}).catch((e) => reject(e))
 
-			resolve(port)
+			resolve()
 		})
 	}
 
