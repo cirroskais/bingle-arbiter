@@ -6,8 +6,8 @@ const GameJob = require("../../lib/classes/GameJob.js")
 
 app.use(express.json())
 
-app.post("/:token", async (request, response) => {
-	const game = global.games.get(request.params.token)
+app.post("/:id", async (request, response) => {
+	const game = global.games.get(request.params.id)
 	if (!game) return response.status(404).json({ error: "Game is not running" })
 
 	const { script } = request.body
