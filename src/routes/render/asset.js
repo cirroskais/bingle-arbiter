@@ -6,27 +6,21 @@ const RenderJob = require("../../lib/classes/RenderJob.js")
 app.get("/:id", async (request, response) => {
 	const { params, query } = request
 	const job = new RenderJob()
-	let body = {}
 
 	const asset = await job.RenderAsset(params.id).catch((_) => _)
-	if (asset?.message) {
-		job.Stop()
-		return response.status(500).json({ error: asset.message })
-	}
-	body.asset = asset
+	if (asset?.message) return response.status(500).json({ error: asset.message })
 
-	if (query.three_d) {
-		const three_d = await job.RenderAsset(params.id, true).catch((_) => _)
-		if (three_d?.message) {
-			job.Stop()
-			return response.status(500).json({ error: three_d.message })
-		}
-		body.three_d = three_d
-	}
+	return response.end(asset)
+})
 
-	job.Stop()
+app.get("/:id/3d", async (request, response) => {
+	const { params, query } = request
+	const job = new RenderJob()
 
-	return response.json(body)
+	const three_d = await job.RenderAsset(params.id, true).catch((_) => _)
+	if (three_d?.message) return response.status(500).json({ error: three_d.message })
+
+	return response.json(JSON.parse(three_d))
 })
 
 module.exports = app

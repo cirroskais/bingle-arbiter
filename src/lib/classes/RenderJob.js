@@ -44,6 +44,8 @@ class RenderJob extends Job {
 
 		logger.info(`${chalk.gray(`${chalk.gray(`[${this.id}]`)}`)} Headshot RenderJob finished for ${id}`)
 
+		this.Stop()
+
 		if (!result) return false
 		return result[0]?.OpenJobExResult?.LuaValue[0]?.value
 	}
@@ -83,6 +85,8 @@ class RenderJob extends Job {
 
 		if (three_d) logger.info(`${chalk.gray(`${chalk.gray(`[${this.id}]`)}`)} 3D Bodyshot RenderJob finished for ${id}`)
 		else logger.info(`${chalk.gray(`${chalk.gray(`[${this.id}]`)}`)} Bodyshot RenderJob finished for ${id}`)
+
+		this.Stop()
 
 		if (!result) return false
 		return result[0]?.OpenJobExResult?.LuaValue[0]?.value
@@ -125,6 +129,8 @@ class RenderJob extends Job {
 		if (three_d) logger.info(`${chalk.gray(`${chalk.gray(`[${this.id}]`)}`)} 3D Asset RenderJob finished for ${id}`)
 		else logger.info(`${chalk.gray(`${chalk.gray(`[${this.id}]`)}`)} Asset RenderJob finished for ${id}`)
 
+		this.Stop()
+
 		if (!result) return false
 		return result[0]?.OpenJobExResult?.LuaValue[0]?.value
 	}
@@ -166,6 +172,8 @@ class RenderJob extends Job {
 
 		logger.info(`${chalk.gray(`${chalk.gray(`[${this.id}]`)}`)} Place RenderJob finished for ${id}`)
 
+		this.Stop()
+
 		if (!result) return false
 		return result[0]?.OpenJobExResult?.LuaValue[0]?.value
 	}
@@ -203,6 +211,8 @@ class RenderJob extends Job {
 		}).catch((e) => false)
 
 		logger.info(`[${this.id}] Headshot RenderJob finished for ${id}`)
+
+		this.Stop()
 
 		if (!result) return false
 		return result[0]?.OpenJobExResult?.LuaValue[0]?.value

@@ -3,37 +3,34 @@ const app = express.Router()
 
 const RenderJob = require("../../lib/classes/RenderJob.js")
 
-app.get("/:id", async (request, response) => {
-	const { params, query } = request
+app.get("/:id/bodyshot", async (request, response) => {
+	const { params } = request
 	const job = new RenderJob()
-	let body = {}
-
-	const headshot = await job.RenderHeadshot(params.id).catch((_) => _)
-	if (headshot?.message) {
-		job.Stop()
-		return response.status(500).json({ error: headshot.message })
-	}
-	body.headshot = headshot
 
 	const bodyshot = await job.RenderBodyshot(params.id).catch((_) => _)
-	if (bodyshot?.message) {
-		job.Stop()
-		return response.status(500).json({ error: bodyshot.message })
-	}
-	body.bodyshot = bodyshot
+	if (bodyshot?.message) return response.status(500).json({ error: bodyshot.message })
 
-	if (query.three_d) {
-		const three_d = await job.RenderBodyshot(params.id, true).catch((_) => _)
-		if (three_d?.message) {
-			job.Stop()
-			return response.status(500).json({ error: three_d.message })
-		}
-		body.three_d = three_d
-	}
+	return response.end(bodyshot)
+})
 
-	job.Stop()
+app.get("/:id/headshot", async (request, response) => {
+	const { params } = request
+	const job = new RenderJob()
 
-	return response.json(body)
+	const headshot = await job.RenderHeadshot(params.id).catch((_) => _)
+	if (headshot?.message) return response.status(500).json({ error: headshot.message })
+
+	return response.end(headshot)
+})
+
+app.get("/:id/3d", async (request, response) => {
+	const { params, query } = request
+	const job = new RenderJob()
+
+	const three_d = await job.RenderBodyshot(params.id, true).catch((_) => _)
+	if (three_d?.message) return response.status(500).json({ error: three_d.message })
+
+	return response.json(JSON.parse(three_d))
 })
 
 module.exports = app
