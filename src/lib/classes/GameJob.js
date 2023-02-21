@@ -12,9 +12,8 @@ class GameJob extends Job {
 	StartGame(id, port) {
 		return new Promise(async (resolve, reject) => {
 			this.placeId = id
-			this.port = 
-			
-			const started = await this.Start()
+			this.port = port
+
 			if (!started) throw new Error("RCCService failed to start")
 			if (!this.client) await this.CreateClient()
 
