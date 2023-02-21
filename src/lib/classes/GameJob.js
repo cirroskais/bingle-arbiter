@@ -3,24 +3,22 @@ const { readFile } = require("fs/promises")
 
 const Job = require("./Job.js")
 const logger = require("../logger.js")
-const randport = require("../randport.js")
 
 class GameJob extends Job {
 	constructor() {
 		super({ expirationInSeconds: 360 })
 	}
 
-	StartGame(id) {
+	StartGame(id, port) {
 		return new Promise(async (resolve, reject) => {
 			this.placeId = id
-
+			this.port = 
+			
 			const started = await this.Start()
 			if (!started) throw new Error("RCCService failed to start")
 			if (!this.client) await this.CreateClient()
 
 			logger.info(`[${this.id}] GameJob started for ${id}`)
-
-			const port = await randport.udp()
 
 			this.OpenJobEx({
 				name: this.id,
@@ -34,12 +32,11 @@ class GameJob extends Job {
 
 						{ type: "LUA_TNUMBER", value: id },
 						{ type: "LUA_TNUMBER", value: port },
-						{ type: "LUA_TSTRING", value: process.env.ARBITER_TOKEN },
 					],
 				},
 			}).catch((e) => reject(e))
 
-			resolve(port)
+			resolve()
 		})
 	}
 
