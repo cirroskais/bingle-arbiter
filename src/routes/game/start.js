@@ -16,6 +16,7 @@ function getGameById(id) {
 app.get("/:id", async (request, response) => {
 	const game = global.games.get(getGameById(request.params.id)?.id)
 	if (game) return response.status(400).json({ error: "Game is running" })
+
 	const job = new GameJob()
 	const result = await job.StartGame(request.params.id, request.query.port).catch((_) => _)
 

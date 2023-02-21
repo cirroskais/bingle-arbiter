@@ -32,6 +32,7 @@ class GameJob extends Job {
 
 						{ type: "LUA_TNUMBER", value: id },
 						{ type: "LUA_TNUMBER", value: port },
+						{ type: "LUA_TSTRING", value: process.env.ARBITER_TOKEN },
 					],
 				},
 			}).catch((e) => reject(e))
