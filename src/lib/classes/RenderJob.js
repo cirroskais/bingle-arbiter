@@ -213,6 +213,48 @@ class RenderJob extends Job {
 		if (!result) return false
 		return result[0]?.OpenJobExResult?.LuaValue[0]?.value
 	}
+
+	async RenderClothing(id, three_d = false) {
+		this.id = randomUUID()
+
+		const running = this.started
+		if (!running) {
+			const started = await this.Start()
+			if (!started) throw new Error("RCCService failed to start")
+		}
+
+		if (!this.client) await this.CreateClient()
+
+		if (three_d) logger.info(`${chalk.gray(`${chalk.gray(`[${this.id}]`)}`)} 3D Asset RenderJob started for ${id}`)
+		else logger.info(`${chalk.gray(`${chalk.gray(`[${this.id}]`)}`)} Asset RenderJob started for ${id}`)
+
+		const result = await this.OpenJobEx({
+			name: this.id,
+			script: await readFile(__dirname + "/../../lua/clothing.lua", { encoding: "utf-8" }),
+			arguments: {
+				LuaValue: [
+					{ type: "LUA_TSTRING", value: this.id },
+
+					{ type: "LUA_TSTRING", value: "Clothing" },
+					{ type: "LUA_TSTRING", value: three_d ? "OBJ" : "PNG" },
+
+					{ type: "LUA_TNUMBER", value: process.env.RENDER_ASSET_WIDTH },
+					{ type: "LUA_TNUMBER", value: process.env.RENDER_ASSET_HEIGHT },
+
+					{ type: "LUA_TSTRING", value: process.env.BASE_URL },
+					{ type: "LUA_TNUMBER", value: id },
+				],
+			},
+		}).catch((e) => false)
+
+		if (three_d) logger.info(`${chalk.gray(`${chalk.gray(`[${this.id}]`)}`)} 3D Asset RenderJob finished for ${id}`)
+		else logger.info(`${chalk.gray(`${chalk.gray(`[${this.id}]`)}`)} Asset RenderJob finished for ${id}`)
+
+		this.Stop()
+
+		if (!result) return false
+		return result[0]?.OpenJobExResult?.LuaValue[0]?.value
+	}
 }
 
 module.exports = RenderJob

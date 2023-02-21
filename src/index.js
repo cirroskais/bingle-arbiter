@@ -24,6 +24,7 @@ app.use("/render/game", require("./routes/render/game.js"))
 app.use("/render/texture", require("./routes/render/texture.js"))
 app.use("/render/user", require("./routes/render/user.js"))
 app.use("/render/texture", require("./routes/render/texture.js"))
+app.use("/render/clothing", require("./routes/render/clothing.js"))
 
 app.use("*", require("./routes/index.js"))
 
