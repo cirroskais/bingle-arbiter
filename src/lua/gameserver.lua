@@ -100,6 +100,8 @@ spawn(function()
 	while wait(60) do
 		if #game.Players:GetPlayers() == 0 then
 			pcall(function() game:HttpGet("https://kapish.fun/dielol/" .. placeId.."?key=" .. key) end)
+		else 
+			pcall(function() game:HttpGet("https://kapish.fun/renewlol/" .. placeId.."?key=" .. key) end)
 		end
 	end
 end)
