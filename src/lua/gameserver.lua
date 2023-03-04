@@ -91,6 +91,7 @@ if baseUrl~=nil then
     game:GetService("InsertService"):SetAssetVersionUrl(baseUrl .. "/Asset/?assetversionid=%d")
 
     pcall(function() loadfile(baseUrl .. "/Game/LoadPlaceInfo.ashx?PlaceId=" .. placeId)() end)
+    pcall(function() game:GetService("NetworkServer"):SetIsPlayerAuthenticationRequired(true) end)
 end
 
 settings().Diagnostics.LuaRamLimit = 0
