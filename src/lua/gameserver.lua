@@ -29,7 +29,7 @@ function update(LeavingPlayer)
 end
 
 function keepAlive(LeavingPlayer)
-    local success, result = pcall(function()
+    pcall(function()
         game:GetService("HttpService").HttpEnabled = true
 
         local body = game:GetService("HttpService"):JSONEncode({
@@ -41,12 +41,6 @@ function keepAlive(LeavingPlayer)
 
         return game:GetService("HttpService"):PostAsync("https://dungblx.cf/API/KeepAlive", body)
     end)
-
-    if not success then
-        local Hint = Instance.new("Hint")
-        Hint.Text = result
-        Hint.Parent = workspace
-    end
 end
 
 -----------------------------------END UTILITY FUNCTIONS -------------------------
