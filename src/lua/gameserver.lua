@@ -85,7 +85,7 @@ if baseUrl~=nil then
     game:GetService("InsertService"):SetAssetVersionUrl(baseUrl .. "/Asset/?assetversionid=%d")
 
     pcall(function() loadfile(baseUrl .. "/Game/LoadPlaceInfo.ashx?PlaceId=" .. placeId)() end)
-    pcall(function() game:GetService("NetworkServer"):SetIsPlayerAuthenticationRequired(true) end)
+    --pcall(function() game:GetService("NetworkServer"):SetIsPlayerAuthenticationRequired(true) end)
 end
 
 settings().Diagnostics.LuaRamLimit = 0
@@ -94,15 +94,34 @@ game:GetService("Players").PlayerAdded:connect(function(player)
     keepAlive()
     print("Player " .. player.userId .. " added")
 
-    player.CharacterAdded:connect(function(c)
-        game:GetObjects("rbxasset://fonts/characterCameraScript.rbxmx")[1].Parent = c
-        game:GetObjects("rbxasset://fonts/characterControlScript.rbxmx")[1].Parent = c
+    player.Chatted:connect(function(message, recipient) 
+        print("[" .. player.Name .. "]: " .. message)
 
-        for i,v in pairs(c:GetChildren()) do
-            print(v.Name)
+        -- 1 : needs semicolon
+        -- 2 : doesn't need semicolon
+        local commands = {
+            ["ec"] = 1,
+            ["energycell"] = 1,
+            ["reset"] = 1,
+            ["kys"] = 1,
+            ["xlxi"] = 1,
+            ["egg"] = 2,
+            ["pog"] = 2,
+            ["poggers"] = 2
+        }
+
+        if commands[message:sub(2):lower()] == 1 or commands[message:lower()] == 2 then
+            if player.Character then
+                local Head = player.Character:FindFirstChild("Head")
+                if Head then
+                    local Sound = Instance.new("Sound", Head)
+                    Sound.SoundId = "rbxassetid://53357"
+                    Sound:Play()
+                end
+
+                player.Character:BreakJoints()
+            end
         end
-
-        print(c.Animate.Source)
     end)
 end)
 
