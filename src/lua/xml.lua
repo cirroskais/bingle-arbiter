@@ -9,7 +9,7 @@ game:GetService("ContentProvider"):SetBaseUrl(baseUrl)
 game:GetService("ScriptContext").ScriptsDisabled = true
 
 local Player = game.Players:CreateLocalPlayer(0)
-Player.CharacterAppearance = ("%s/Asset?Id=%d"):format(baseUrl, assetId)
+Player.CharacterAppearance = ("%s/Asset?id=%d"):format(baseUrl, assetId)
 Player:LoadCharacter(false)
 
 game:GetService("RunService"):Run()
