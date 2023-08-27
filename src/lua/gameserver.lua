@@ -12,6 +12,39 @@ function waitForChild(parent, childName)
 	end
 end
 
+function update(LeavingPlayer)
+    local names = {}
+    for _, player in pairs(game:GetService("Players"):GetPlayers()) do
+        if (player ~= LeavingPlayer) then
+            table.insert(names, player.Name)
+        end
+    end
+
+    local str = (#names > 0) and (#names > 1) and (names[1] .. ",") or names[1] or ""
+
+    for i = 2, #names -1, 1 do
+        str = str .. names[i] .. ","
+    end
+
+    str = (#names > 0) and (#names > 1) and (str .. names[#names]) or names[1] or ""
+    return str
+end
+
+function keepAlive(LeavingPlayer)
+    pcall(function()
+        game:GetService("HttpService").HttpEnabled = true
+
+        local body = game:GetService("HttpService"):JSONEncode({
+            ["ServerIP"] = jobId,
+            ["PlaceId"] = game.PlaceId,
+            ["PlayerCount"] = #game:GetService("Players"):GetPlayers(),
+            ["PlayerList"] = update(LeavingPlayer),
+        })
+
+        return game:GetService("HttpService"):PostAsync("https://dungblx.cf/API/KeepAlive", body)
+    end)
+end
+
 -----------------------------------END UTILITY FUNCTIONS -------------------------
 
 -----------------------------------"CUSTOM" SHARED CODE----------------------------------
@@ -34,6 +67,7 @@ pcall(function() scriptContext:AddStarterScript(37801172) end)
 
 game:SetPlaceID(assetId, false)
 game:GetService("ChangeHistoryService"):SetEnabled(false)
+game:GetService("HttpService").HttpEnabled = true
 
 local ns = game:GetService("NetworkServer")
 
@@ -54,7 +88,8 @@ if baseUrl ~= nil then
 	game:GetService("InsertService"):SetAssetUrl(baseUrl .. "/Asset/?id=%d")
 	game:GetService("InsertService"):SetAssetVersionUrl(baseUrl .. "/Asset/?assetversionid=%d")
 
-	pcall(function() loadfile(baseUrl .. "/Game/LoadPlaceInfo.ashx?PlaceId=" .. placeId)() end)
+    pcall(function() loadfile(baseUrl .. "/Game/LoadPlaceInfo.ashx?PlaceId=" .. placeId)() end)
+    pcall(function() game:GetService("NetworkServer"):SetIsPlayerAuthenticationRequired(true) end)
 end
 
 pcall(function() game:GetService("NetworkServer"):SetIsPlayerAuthenticationRequired(true) end)
@@ -105,7 +140,5 @@ spawn(function()
 		end
 	end
 end)
-
-------------------------------END START GAME SHARED SCRIPT--------------------------
 
 game:GetService("RunService"):Run()

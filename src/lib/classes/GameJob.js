@@ -11,8 +11,13 @@ class GameJob extends Job {
 
 	StartGame(id, port) {
 		return new Promise(async (resolve, reject) => {
+			const response = await axios(`${process.env.BASE_URL}/API/Game/${id}?t=${process.env.ARBITER_TOKEN}`).catch((_) => reject(_))
+			const { server_token, server_port } = response.data
+
+			this.serverToken = server_token
 			this.placeId = id
 			this.port = port
+			this.id = id
 
 			const started = await this.Start()
 			if (!started) throw new Error("RCCService failed to start")

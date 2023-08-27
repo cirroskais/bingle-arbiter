@@ -11,7 +11,7 @@ app.post("/:id", async (request, response) => {
 	if (!game) return response.status(404).json({ error: "Game is not running" })
 
 	const { script } = request.body
-	const jobResponse = await game.Execute(randomUUID(), script)
+	const jobResponse = await game.Execute(randomUUID(), script).catch((_) => _)
 
 	return response.json({ response: jobResponse })
 })
