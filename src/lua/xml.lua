@@ -8,19 +8,12 @@ game:GetService("InsertService"):SetAssetVersionUrl(baseUrl .. "/Asset/?assetver
 game:GetService("ContentProvider"):SetBaseUrl(baseUrl)
 game:GetService("ScriptContext").ScriptsDisabled = true
 
-local Player = game.Players:CreateLocalPlayer(0)
-Player.CharacterAppearance = ("%s/Asset?id=%d"):format(baseUrl, assetId)
-Player:LoadCharacter(false)
+local asset = game:GetObjects(("%s/asset/?id=%d"):format(baseUrl, assetId))[1]
+asset.Parent = workspace
 
-game:GetService("RunService"):Run()
-
-Player.Character.Animate.Disabled = true
-Player.Character.Torso.Anchored = true
-
-local gear = Player.Backpack:GetChildren()[1]
-if gear then
-    gear.Parent = Player.Character
-    Player.Character.Torso["Right Shoulder"].CurrentAngle = math.rad(90)
+local thumbnailCamera = asset:FindFirstChild("ThumbnailCamera")
+if thumbnailCamera ~= nil and thumbnailCamera.ClassName == "Camera" then
+    workspace.CurrentCamera = thumbnailCamera
 end
 
 print(("[%s] Rendering ..."):format(jobId))
