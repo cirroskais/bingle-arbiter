@@ -12,39 +12,6 @@ function waitForChild(parent, childName)
 	end
 end
 
-function update(LeavingPlayer)
-    local names = {}
-    for _, player in pairs(game:GetService("Players"):GetPlayers()) do
-        if (player ~= LeavingPlayer) then
-            table.insert(names, player.Name)
-        end
-    end
-
-    local str = (#names > 0) and (#names > 1) and (names[1] .. ",") or names[1] or ""
-
-    for i = 2, #names -1, 1 do
-        str = str .. names[i] .. ","
-    end
-
-    str = (#names > 0) and (#names > 1) and (str .. names[#names]) or names[1] or ""
-    return str
-end
-
-function keepAlive(LeavingPlayer)
-    pcall(function()
-        game:GetService("HttpService").HttpEnabled = true
-
-        local body = game:GetService("HttpService"):JSONEncode({
-            ["ServerIP"] = jobId,
-            ["PlaceId"] = game.PlaceId,
-            ["PlayerCount"] = #game:GetService("Players"):GetPlayers(),
-            ["PlayerList"] = update(LeavingPlayer),
-        })
-
-        return game:GetService("HttpService"):PostAsync("https://dungblx.cf/API/KeepAlive", body)
-    end)
-end
-
 -----------------------------------END UTILITY FUNCTIONS -------------------------
 
 -----------------------------------"CUSTOM" SHARED CODE----------------------------------
@@ -106,7 +73,7 @@ end)
 
 if placeId~=nil and baseUrl~=nil then
 	wait()
-	game:Load("https://kapish.fun/asset/?id=" .. placeId .. "&placelol=true&key=" .. key)
+	game:Load("https://kapish.fun/asset/?id=" .. placeId .. "&placelol=true")
 end
 
 -- Now start the connection
@@ -127,16 +94,16 @@ spawn(function()
 			end
 		end
 
-		pcall(function() game:HttpGet('http://kapish.fun/server/ping/' .. placeId .. '?players=' .. playerIds .. "&key=" .. key) end)
+		pcall(function() game:HttpGet('http://kapish.fun/server/ping/' .. placeId .. '?players=' .. playerIds) end)
 	end
 end)
 
 spawn(function()
 	while wait(60) do
 		if #game.Players:GetPlayers() == 0 then
-			pcall(function() game:HttpGet("https://kapish.fun/dielol/" .. placeId.."?key=" .. key) end)
+			pcall(function() game:HttpGet("https://kapish.fun/dielol/" .. placeId) end)
 		else 
-			pcall(function() game:HttpGet("https://kapish.fun/renewlol/" .. placeId.."?key=" .. key) end)
+			pcall(function() game:HttpGet("https://kapish.fun/renewlol/" .. placeId) end)
 		end
 	end
 end)
