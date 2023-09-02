@@ -1,4 +1,4 @@
-local jobId, type, baseUrl, placeId, port, key = ...
+local jobId, type, baseUrl, placeId, port, key, creatorId = ...
 
 ------------------- UTILITY FUNCTIONS --------------------------
 
@@ -54,9 +54,10 @@ if baseUrl ~= nil then
 	game:GetService("InsertService"):SetCollectionUrl(baseUrl .. "/Game/Tools/InsertAsset.ashx?sid=%d")
 	game:GetService("InsertService"):SetAssetUrl(baseUrl .. "/Asset/?id=%d")
 	game:GetService("InsertService"):SetAssetVersionUrl(baseUrl .. "/Asset/?assetversionid=%d")
-
+    pcall(function() game:SetCreatorID(creatorId, Enum.CreatorType.User) end)
     pcall(function() loadfile(baseUrl .. "/Game/LoadPlaceInfo.ashx?PlaceId=" .. placeId)() end)
-    pcall(function() game:GetService("NetworkServer"):SetIsPlayerAuthenticationRequired(true) end)
+  --  pcall(function() game:GetService("NetworkServer"):SetIsPlayerAuthenticationRequired(true) end)
+    game:GetService('Players'):SetSysStatsUrl('https://kapish.fun/Game/report-stats')
 end
 
 pcall(function() game:GetService("NetworkServer"):SetIsPlayerAuthenticationRequired(true) end)
@@ -64,11 +65,11 @@ pcall(function() game:GetService("NetworkServer"):SetIsPlayerAuthenticationRequi
 settings().Diagnostics.LuaRamLimit = 0
 
 game:GetService("Players").PlayerAdded:connect(function(player)
-	print("Player " .. player.userId .. " added")
+	--print("Player " .. player.userId .. " added")
 end)
 
 game:GetService("Players").PlayerRemoving:connect(function(player)
-	print("Player " .. player.userId .. " leaving")
+	--print("Player " .. player.userId .. " leaving")
 end)
 
 if placeId~=nil and baseUrl~=nil then
@@ -78,8 +79,7 @@ end
 
 -- Now start the connection
 
-ns:Start(port)
-
+game:GetService("RunService"):Run()
 spawn(function()
 	while wait(5) do
 		local playerIds = ""
@@ -107,5 +107,3 @@ spawn(function()
 		end
 	end
 end)
-
-game:GetService("RunService"):Run()
