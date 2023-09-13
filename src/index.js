@@ -23,8 +23,8 @@ app.use("/render/asset", require("./routes/render/asset.js"))
 app.use("/render/game", require("./routes/render/game.js"))
 app.use("/render/texture", require("./routes/render/texture.js"))
 app.use("/render/user", require("./routes/render/user.js"))
-app.use("/render/texture", require("./routes/render/texture.js"))
 app.use("/render/clothing", require("./routes/render/clothing.js"))
+app.use("/render/mesh", require("./routes/render/mesh.js"))
 
 app.use("*", require("./routes/index.js"))
 
